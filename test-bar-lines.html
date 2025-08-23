@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhraseMaker Bar Lines Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 5px;
+        }
+        .test-description {
+            color: #666;
+            margin: 10px 0;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .feature-list {
+            background-color: #e8f4fd;
+            border-left: 4px solid #007acc;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .feature-list h4 {
+            margin-top: 0;
+            color: #007acc;
+        }
+        .feature-list ul {
+            margin: 10px 0;
+        }
+        .feature-list li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">PhraseMaker Bar Lines Feature Test</h1>
+        
+        <div class="test-section">
+            <h2 class="test-title">Feature Overview</h2>
+            <p class="test-description">
+                This test demonstrates the new bar lines feature in the PhraseMaker widget. 
+                Bar lines are automatically added based on the current meter setting to help 
+                users orient themselves in musical measures.
+            </p>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">How It Works</h3>
+            <div class="feature-list">
+                <h4>Automatic Bar Line Placement</h4>
+                <ul>
+                    <li>Bar lines are calculated based on the current meter (time signature)</li>
+                    <li>For example, in 4/4 time, a bar line appears after every 4 quarter notes</li>
+                    <li>Bar lines update automatically when the meter changes</li>
+                    <li>Bar lines are positioned correctly accounting for fixed columns</li>
+                </ul>
+                
+                <h4>Visual Design</h4>
+                <ul>
+                    <li>Bar lines are dark vertical lines (#333 color)</li>
+                    <li>2px width for clear visibility</li>
+                    <li>Positioned above the grid content (z-index: 10)</li>
+                    <li>Non-interactive (pointer-events: none)</li>
+                </ul>
+                
+                <h4>Dynamic Updates</h4>
+                <ul>
+                    <li>Bar lines refresh when notes are added</li>
+                    <li>Bar lines refresh when the grid is sorted</li>
+                    <li>Bar lines refresh when the meter changes</li>
+                    <li>Periodic checks for meter changes every 2 seconds</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">Implementation Details</h3>
+            <p class="test-description">
+                The bar lines feature has been implemented with the following key methods:
+            </p>
+            
+            <div class="code-block">
+// Get current meter information
+_getCurrentMeter() {
+    const turtle = 0;
+    const tur = this.activity.logo.turtles.ithTurtle(turtle);
+    if (tur && tur.singer) {
+        return {
+            beatsPerMeasure: tur.singer.beatsPerMeasure || 4,
+            noteValuePerBeat: tur.singer.noteValuePerBeat || 1/4
+        };
+    }
+    return { beatsPerMeasure: 4, noteValuePerBeat: 1/4 };
+}
+
+// Add bar lines based on current meter
+_addBarLines() {
+    this._clearBarLines();
+    
+    if (!this.activity.logo.tupletRhythms || this.activity.logo.tupletRhythms.length === 0) {
+        return;
+    }
+    
+    const meter = this._getCurrentMeter();
+    const beatsPerMeasure = meter.beatsPerMeasure;
+    const noteValuePerBeat = meter.noteValuePerBeat;
+    const notesPerMeasure = beatsPerMeasure / noteValuePerBeat;
+    
+    let currentNoteCount = 0;
+    let currentPosition = 0;
+    
+    for (let i = 0; i < this.activity.logo.tupletRhythms.length; i++) {
+        const noteValue = this.activity.logo.tupletRhythms[i][2];
+        const noteWidth = this._noteWidth(noteValue);
+        
+        currentNoteCount += 1 / noteValue;
+        currentPosition += noteWidth;
+        
+        if (currentNoteCount >= notesPerMeasure) {
+            this._drawBarLine(currentPosition);
+            currentNoteCount = 0;
+        }
+    }
+}
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">Testing Instructions</h3>
+            <p class="test-description">
+                To test this feature in the actual MusicBlocks application:
+            </p>
+            <ol>
+                <li>Open MusicBlocks and create a new project</li>
+                <li>Add a Meter block and set it to 4/4 (or any other time signature)</li>
+                <li>Add a PhraseMaker block to open the matrix</li>
+                <li>Add some rhythm blocks to create musical content</li>
+                <li>Observe that bar lines appear automatically at measure boundaries</li>
+                <li>Change the meter and see bar lines update accordingly</li>
+                <li>Add more notes and see bar lines adjust to new content</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">Expected Behavior</h3>
+            <div class="feature-list">
+                <h4>Default 4/4 Time</h4>
+                <ul>
+                    <li>Bar line after every 4 quarter notes</li>
+                    <li>Bar line after every 8 eighth notes</li>
+                    <li>Bar line after every 2 half notes</li>
+                </ul>
+                
+                <h4>3/4 Time</h4>
+                <ul>
+                    <li>Bar line after every 3 quarter notes</li>
+                    <li>Bar line after every 6 eighth notes</li>
+                </ul>
+                
+                <h4>6/8 Time</h4>
+                <ul>
+                    <li>Bar line after every 6 eighth notes</li>
+                    <li>Bar line after every 3 quarter notes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3 class="test-title">Benefits</h3>
+            <p class="test-description">
+                This feature provides several benefits for MusicBlocks users:
+            </p>
+            <ul>
+                <li><strong>Better Orientation:</strong> Users can easily see where measures begin and end</li>
+                <li><strong>Transcription Help:</strong> Useful for projects that need to be transcribed to sheet music</li>
+                <li><strong>Musical Structure:</strong> Helps users understand the rhythmic structure of their compositions</li>
+                <li><strong>Professional Appearance:</strong> Makes the grid look more like traditional musical notation</li>
+                <li><strong>Educational Value:</strong> Helps teach musical concepts like measures and time signatures</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
