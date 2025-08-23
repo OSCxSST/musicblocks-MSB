@@ -880,95 +880,96 @@ class Palette {
         ).childNodes[0].style.borderRight = `1px solid ${platformColor.selectorSelected}`;
         this._hideMenuItems();
     }
+// CHANGE 1
 
     showMenu(createHeader) {
-        const palDiv = docById("palette");
-        palDiv.childNodes[0].style.borderRight = "0";
-        if (docById("PaletteBody")) palDiv.removeChild(docById("PaletteBody"));
-        const palBody = document.createElement("table");
-        palBody.id = "PaletteBody";
-        const palBodyHeight = window.innerHeight - this.palettes.top - this.palettes.cellSize - 26;
-
-        // palBody.innerHTML = `<thead></thead><tbody style = "display: block; height: ${palBodyHeight}px; overflow: auto; overflow-x: hidden;" id="PaletteBody_items" class="PalScrol"></tbody>`;
-
-        palBody.insertAdjacentHTML(
-            "afterbegin",
-            `<thead></thead><tbody style = "display: block;   width: 100% ; height:auto ; max-height: ${palBodyHeight}px;  overflow: auto; overflow-x: hidden;" id="PaletteBody_items" class="PalScrol"></tbody>`
-        );
-
-        palBody.style.minWidth = "180px";
-        palBody.style.background = platformColor.paletteBackground;
-        palBody.style.float = "left";
-
-        palBody.style.border = `1px solid ${platformColor.selectorSelected}`;
-        [palBody.childNodes[0], palBody.childNodes[1]].forEach((item) => {
-            item.style.boxSizing = "border-box";
-            item.style.padding = "8px";
-        });
-        palDiv.appendChild(palBody);
-
-        this.menuContainer = palBody;
-
-        if (createHeader) {
-            let header = this.menuContainer.children[0];
-            header = header.insertRow();
-            header.style.backgroundColor = platformColor.paletteLabelBackground;
-            header.innerHTML =
-                '<td style ="width: 100%; height: 42px; box-sizing: border-box; display: flex; flex-direction: row; align-items: center; justify-content: space-between;"></td>';
-            header = header.children[0];
-            header.style.padding = "8px";
-
-            const labelImg = makePaletteIcons(
-                PALETTEICONS[this.name],
-                this.palettes.cellSize,
-                this.palettes.cellSize
+      
+            const palDiv = docById("palette");
+            palDiv.childNodes[0].style.borderRight = "0";
+            if (docById("PaletteBody")) palDiv.removeChild(docById("PaletteBody"));
+            const palBody = document.createElement("table");
+            palBody.id = "PaletteBody";
+            const palBodyHeight = window.innerHeight - this.palettes.top - this.palettes.cellSize - 26;
+        
+            palBody.insertAdjacentHTML(
+                "afterbegin",
+                `<thead></thead><tbody style="display: block; width: 100%; height:auto; max-height: ${palBodyHeight}px; overflow: auto; overflow-x: hidden;" id="PaletteBody_items" class="PalScrol"></tbody>`
             );
-            labelImg.style.borderRadius = "4px";
-            labelImg.style.padding = "2px";
-            labelImg.style.backgroundColor = platformColor.paletteBackground;
-            header.appendChild(labelImg);
-
-            const label = document.createElement("span");
-            label.textContent = toTitleCase(_(this.name));
-            label.style.fontWeight = "bold";
-            label.style.color = platformColor.textColor;
-            header.appendChild(label);
-
-            const closeDownImg = document.createElement("span");
-            closeDownImg.style.height = `${this.palettes.cellSize}px`;
-            const closeImg = makePaletteIcons(
-                CLOSEICON.replace("fill_color", platformColor.selectorSelected),
-                this.palettes.cellSize,
-                this.palettes.cellSize
-            );
-            closeImg.onclick = () => this.hideMenu();
-            closeImg.onmouseover = () => (document.body.style.cursor = "pointer");
-            closeImg.onmouseleave = () => (document.body.style.cursor = "default");
-            closeDownImg.appendChild(closeImg);
-            header.appendChild(closeDownImg);
-        }
-
-        this._showMenuItems();
-
-        // Close palette menu on outside click
-        if (this._outsideClickListener) {
-            // Remove any existing listener before attaching a new one
-            document.removeEventListener("click", this._outsideClickListener);
-        }
-
-        this._outsideClickListener = (event) => {
-            if (!this.menuContainer.contains(event.target)) {
-                this.hideMenu(); // Calls your existing hideMenu() → _hideMenuItems()
-                document.removeEventListener("click", this._outsideClickListener);
-                this._outsideClickListener = null;
+        
+            palBody.style.minWidth = "180px";
+            palBody.style.background = platformColor.paletteBackground;
+            palBody.style.float = "left";
+            palBody.style.border = `1px solid ${platformColor.selectorSelected}`;
+            [palBody.childNodes[0], palBody.childNodes[1]].forEach((item) => {
+                item.style.boxSizing = "border-box";
+                item.style.padding = "8px";
+            });
+            palDiv.appendChild(palBody);
+        
+            this.menuContainer = palBody;
+        
+            if (createHeader) {
+                let header = this.menuContainer.children[0];
+                header = header.insertRow();
+                header.style.backgroundColor = platformColor.paletteLabelBackground;
+                header.innerHTML =
+                    '<td style="width: 100%; height: 42px; box-sizing: border-box; display: flex; flex-direction: row; align-items: center; justify-content: space-between;"></td>';
+                header = header.children[0];
+                header.style.padding = "8px";
+        
+                const labelImg = makePaletteIcons(
+                    PALETTEICONS[this.name],
+                    this.palettes.cellSize,
+                    this.palettes.cellSize
+                );
+                labelImg.style.borderRadius = "4px";
+                labelImg.style.padding = "2px";
+                labelImg.style.backgroundColor = platformColor.paletteBackground;
+                header.appendChild(labelImg);
+        
+                const label = document.createElement("span");
+                label.textContent = toTitleCase(_(this.name));
+                label.style.fontWeight = "bold";
+                label.style.color = platformColor.textColor;
+                header.appendChild(label);
+        
+                const closeDownImg = document.createElement("span");
+                closeDownImg.style.height = `${this.palettes.cellSize}px`;
+                const closeImg = makePaletteIcons(
+                    CLOSEICON.replace("fill_color", platformColor.selectorSelected),
+                    this.palettes.cellSize,
+                    this.palettes.cellSize
+                );
+                closeImg.onclick = () => this.hideMenu();
+                closeImg.onmouseover = () => (document.body.style.cursor = "pointer");
+                closeImg.onmouseleave = () => (document.body.style.cursor = "default");
+                closeDownImg.appendChild(closeImg);
+                header.appendChild(closeDownImg);
             }
-        };
-
-        // Delay listener to avoid capturing the click that opened the menu
-        setTimeout(() => {
-            document.addEventListener("click", this._outsideClickListener);
-        }, 0);
-    }
+        
+            this._showMenuItems();
+        
+            // --- PASTE THIS BLOCK AT THE END OF showMenu, BEFORE THE CLOSING BRACE ---
+            if (this._outsideClickListener) {
+                // Remove any existing listener before attaching a new one
+                document.removeEventListener("click", this._outsideClickListener);
+            }
+        
+            this._outsideClickListener = (event) => {
+                if (!this.menuContainer.contains(event.target)) {
+                    this.hideMenu(); // Calls your existing hideMenu() → _hideMenuItems()
+                    document.removeEventListener("click", this._outsideClickListener);
+                    this._outsideClickListener = null;
+                }
+            };
+        
+            // Delay listener to avoid capturing the click that opened the menu
+            setTimeout(() => {
+                document.addEventListener("click", this._outsideClickListener);
+            }, 0);
+        }
+        
+    
 
     _hideMenuItems() {
         if (this.name === "search" && this.activity.hideSearchWidget !== null) {
