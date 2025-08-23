@@ -35,6 +35,35 @@ Visit the Music Blocks website for a hands on experience:
 
 Or download Music Blocks from the [Google Play Store](https://play.google.com/store/apps/details?id=my.musicblock.sugarlab)
 
+## 🖥️ Desktop Application (NEW!)
+
+Music Blocks is now available as a **standalone desktop application** with enhanced offline support!
+
+### ✨ Desktop Features
+- **🔄 Offline Mode**: Full functionality without internet connection
+- **📁 Native File System**: Enhanced file operations with system dialogs  
+- **🌐 Cross-Platform**: Windows, macOS, and Linux support
+- **⌨️ Keyboard Shortcuts**: Standard desktop shortcuts (Ctrl+S, Ctrl+O, etc.)
+- **🎯 Native Menus**: Platform-specific menu integration
+- **⚡ Better Performance**: Optimized for desktop use
+
+### 🚀 Quick Start (Desktop)
+```bash
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run electron-dev
+
+# Build for production
+npm run dist
+```
+
+For detailed desktop installation and usage instructions, see [ELECTRON-README.md](./ELECTRON-README.md).
+
+### 📦 Download Desktop App
+*(Coming soon - pre-built downloads for Windows, macOS, and Linux)*
+
 Additional background on why we combine music and programming can be found
 [here](./WhyMusicBlocks.md).
 

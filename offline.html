@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Blocks - Offline</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        .status {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        .actions {
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+            border-color: #45a049;
+        }
+        
+        .features {
+            margin-top: 2rem;
+            text-align: left;
+            opacity: 0.8;
+        }
+        
+        .features h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .features li:before {
+            content: "♪";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .offline {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .online {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status offline" id="connectionStatus">
+        🔴 Offline
+    </div>
+
+    <div class="container">
+        <div class="logo">🎵</div>
+        
+        <h1>Music Blocks</h1>
+        <h2>Offline Mode</h2>
+        
+        <div class="status">
+            <strong>You're currently offline.</strong><br>
+            Some features may be limited, but you can still create music!
+        </div>
+        
+        <div class="actions">
+            <a href="javascript:history.back()" class="btn">← Go Back</a>
+            <a href="javascript:location.reload()" class="btn btn-primary">🔄 Try Again</a>
+        </div>
+        
+        <div class="features">
+            <h3>Available Offline Features:</h3>
+            <ul>
+                <li>Create and compose music using blocks</li>
+                <li>Play back your compositions</li>
+                <li>Save projects locally</li>
+                <li>Access built-in instruments and sounds</li>
+                <li>Use all core programming blocks</li>
+                <li>Export projects as MIDI, PNG, or SVG</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Monitor connection status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            if (navigator.onLine) {
+                statusEl.textContent = '🟢 Online';
+                statusEl.className = 'connection-status online';
+                // Auto-reload when connection is restored
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                statusEl.textContent = '🔴 Offline';
+                statusEl.className = 'connection-status offline';
+            }
+        }
+
+        // Initial status check
+        updateConnectionStatus();
+
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Periodic connection check
+        setInterval(() => {
+            fetch('/', { method: 'HEAD', mode: 'no-cors' })
+                .then(() => {
+                    if (!navigator.onLine) {
+                        // Force update if fetch succeeds but navigator.onLine is false
+                        updateConnectionStatus();
+                    }
+                })
+                .catch(() => {
+                    // Connection is truly offline
+                });
+        }, 5000);
+
+        // Service worker update check
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            // New service worker is available
+                            const updateBanner = document.createElement('div');
+                            updateBanner.innerHTML = `
+                                <div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #4CAF50; color: white; padding: 15px; border-radius: 8px; text-align: center; z-index: 1000;">
+                                    <strong>Update Available!</strong><br>
+                                    <button onclick="location.reload()" style="margin-top: 10px; padding: 8px 16px; border: none; background: white; color: #4CAF50; border-radius: 4px; cursor: pointer;">
+                                        Update Now
+                                    </button>
+                                </div>
+                            `;
+                            document.body.appendChild(updateBanner);
+                        }
+                    });
+                });
+            });
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                location.reload();
+            }
+            if (e.key === 'Escape') {
+                history.back();
+            }
+        });
+    </script>
+</body>
+</html>
