@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Animation Export Test - MusicBlocks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-title {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .feature-list {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .feature-list h4 {
+            color: #4CAF50;
+            margin-top: 0;
+        }
+        .feature-list ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .feature-list li {
+            margin: 8px 0;
+            line-height: 1.4;
+        }
+        .code-example {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 3px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 3px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="test-title">Mouse Animation Export Feature Test</h1>
+        
+        <div class="test-section">
+            <h2 class="test-title">Overview</h2>
+            <p>This test demonstrates the new mouse animation export features added to MusicBlocks. Students can now export their mouse artwork animations as MP4 videos, either with or without music.</p>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">New Features Added</h2>
+            
+            <div class="feature-list">
+                <h4>1. Export Mouse Animation as MP4</h4>
+                <ul>
+                    <li>Records only the canvas animation (no audio)</li>
+                    <li>Uses WebM format with VP9 codec for optimal quality</li>
+                    <li>30 FPS recording for smooth playback</li>
+                    <li>5 Mbps video bitrate for high quality</li>
+                </ul>
+            </div>
+
+            <div class="feature-list">
+                <h4>2. Export Mouse Animation with Music as MP4</h4>
+                <ul>
+                    <li>Records both canvas animation and audio output</li>
+                    <li>Combines video and audio streams</li>
+                    <li>128 kbps audio bitrate for good sound quality</li>
+                    <li>Gracefully handles cases where audio capture fails</li>
+                </ul>
+            </div>
+
+            <div class="feature-list">
+                <h4>3. User Interface Improvements</h4>
+                <ul>
+                    <li>New export options added to the Save menu</li>
+                    <li>Visual separator between static and video export options</li>
+                    <li>Dynamic stop recording button appears during recording</li>
+                    <li>Clear user feedback and status messages</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">How to Use</h2>
+            
+            <h4>For Mouse Animation Only:</h4>
+            <ol>
+                <li>Create your mouse artwork in MusicBlocks</li>
+                <li>Click the Save button (floppy disk icon)</li>
+                <li>Select "Export mouse animation as MP4"</li>
+                <li>Recording will start automatically</li>
+                <li>Click "Stop mouse animation recording" when done</li>
+                <li>Enter a filename and the video will download</li>
+            </ol>
+
+            <h4>For Mouse Animation with Music:</h4>
+            <ol>
+                <li>Create your mouse artwork and music in MusicBlocks</li>
+                <li>Click the Save button (floppy disk icon)</li>
+                <li>Select "Export mouse animation with music as MP4"</li>
+                <li>Recording will start automatically</li>
+                <li>Click "Stop mouse animation recording" when done</li>
+                <li>Enter a filename and the video will download</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Technical Implementation</h2>
+            
+            <h4>Key Technologies Used:</h4>
+            <ul>
+                <li><strong>MediaRecorder API:</strong> For video recording</li>
+                <li><strong>Canvas.captureStream():</strong> For capturing canvas animation</li>
+                <li><strong>WebM/VP9:</strong> For optimal video quality and file size</li>
+                <li><strong>Audio Context:</strong> For capturing music output</li>
+            </ul>
+
+            <h4>File Format:</h4>
+            <p>Videos are exported as WebM files (which can be easily converted to MP4 using tools like FFmpeg). WebM was chosen because:</p>
+            <ul>
+                <li>Better browser support than direct MP4 encoding</li>
+                <li>VP9 codec provides excellent quality-to-size ratio</li>
+                <li>Can be easily converted to MP4 for sharing</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Browser Compatibility</h2>
+            
+            <div class="note">
+                <strong>Note:</strong> The MediaRecorder API is required for this feature to work.
+            </div>
+
+            <h4>Supported Browsers:</h4>
+            <ul>
+                <li><strong>Chrome/Edge:</strong> Full support</li>
+                <li><strong>Firefox:</strong> Full support</li>
+                <li><strong>Safari:</strong> Limited support (may need to use alternative export methods)</li>
+            </ul>
+
+            <div class="warning">
+                <strong>Warning:</strong> Older browsers may not support these features. Users will see an appropriate error message.
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Educational Benefits</h2>
+            
+            <h4>For Students:</h4>
+            <ul>
+                <li>Share their musical creations as videos</li>
+                <li>Document their learning progress</li>
+                <li>Create content for portfolios or presentations</li>
+                <li>Better understanding of how music and visual art interact</li>
+            </ul>
+
+            <h4>For Teachers:</h4>
+            <ul>
+                <li>Assess student work through video submissions</li>
+                <li>Create teaching materials and examples</li>
+                <li>Document classroom activities</li>
+                <li>Share student work with parents and administrators</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Testing Instructions</h2>
+            
+            <ol>
+                <li>Open MusicBlocks in a supported browser</li>
+                <li>Create a simple mouse animation (e.g., draw a shape)</li>
+                <li>Add some music blocks to create sound</li>
+                <li>Test the export features:
+                    <ul>
+                        <li>Export animation only</li>
+                        <li>Export animation with music</li>
+                        <li>Verify the stop recording button appears</li>
+                        <li>Check that files download correctly</li>
+                    </ul>
+                </li>
+                <li>Test error handling by trying to export without any artwork</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2 class="test-title">Future Enhancements</h2>
+            
+            <p>Potential improvements for future versions:</p>
+            <ul>
+                <li>Direct MP4 export (requires additional libraries)</li>
+                <li>Customizable video quality settings</li>
+                <li>Batch export of multiple animations</li>
+                <li>Integration with cloud storage services</li>
+                <li>Video editing capabilities within MusicBlocks</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
