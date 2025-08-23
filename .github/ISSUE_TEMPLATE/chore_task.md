@@ -1,30 +1,74 @@
 ---
-name: 🧹Chore or task
-about: Identify a necessary task to be addressed.
-title: ""
-labels: ""
+name: 🧹 Maintenance & Chores
+about: Identify maintenance tasks, refactoring, or technical debt
+title: "[Chore]: "
+labels: ["maintenance", "technical-debt", "chore"]
 assignees: ""
 ---
 
-### Current Behavior
+## Task Type
 
-<!-- A brief description of what the current circumstance is. -->
+- [ ] Code refactoring
+- [ ] Dependency updates
+- [ ] Technical debt reduction
+- [ ] Code cleanup
+- [ ] File organization
+- [ ] Performance optimization
+- [ ] Security updates
+- [ ] Build system maintenance
+- [ ] Other maintenance task
 
-### Desired Situation
+## Current State
 
-<!-- A brief description of the necessary action to take. -->
+<!-- Describe the current situation that needs attention -->
 
-### Checklist
+## Proposed Action
 
--   [ ] I have read and followed the project's code of conduct.
--   [ ] I have searched for similar issues before creating this one.
--   [ ] I have provided all the necessary information to understand and reproduce the issue.
--   [ ] I am willing to contribute to the resolution of this issue.
+<!-- Describe what needs to be done -->
+
+## Why This Matters
+
+<!-- Explain the importance of this maintenance task -->
+
+## Scope of Work
+
+<!-- Estimate the complexity and scope -->
+
+- [ ] Small task (< 1 day)
+- [ ] Medium task (1-3 days)  
+- [ ] Large task (> 3 days)
+
+## Areas Affected
+
+<!-- Which parts of the codebase will be affected? -->
+
+- [ ] Frontend/UI
+- [ ] Backend/Server
+- [ ] Build system
+- [ ] Documentation
+- [ ] Tests
+- [ ] Dependencies
+- [ ] Configuration
+
+## Breaking Changes
+
+- [ ] This task may introduce breaking changes
+- [ ] This task is backward compatible
+- [ ] Uncertain about compatibility impact
+
+## Related Issues
+
+<!-- Link any related issues using #issue_number -->
+
+## Checklist
+
+- [ ] I have identified a clear maintenance need
+- [ ] I have considered the impact on existing functionality
+- [ ] I have estimated the scope of work appropriately
+- [ ] I am willing to help with this maintenance task
 
 ---
 
-Thank you for contributing to our project! We appreciate your help in improving it.
+**Thank you for helping maintain Music Blocks!** 🧹
 
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
-
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+📚 [Contributing Guidelines](https://github.com/sugarlabs/musicblocks/blob/master/README.md) | � [Community Chat](https://matrix.to/#/#sugar:matrix.org)

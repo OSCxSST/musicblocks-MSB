@@ -1,40 +1,65 @@
 ---
-name: 🛠 Continuous Integration / DevOps
-about: Improve or update workflows or other automation
-title: "[CI]"
-labels: ""
+name: 🛠️ CI/CD & DevOps
+about: Improve workflows, automation, or development infrastructure
+title: "[CI]: "
+labels: ["ci/cd", "infrastructure", "automation"]
 assignees: ""
 ---
 
-#### Current Behavior
+## Issue Type
 
-<!-- A brief description of what the problem is. (e.g. I need to be able to...) -->
+- [ ] GitHub Actions workflow improvement
+- [ ] Build process optimization
+- [ ] Testing automation
+- [ ] Deployment pipeline
+- [ ] Development environment setup
+- [ ] Code quality tools
+- [ ] Security scanning
+- [ ] Performance monitoring
+- [ ] Other automation
 
-#### Desired Behavior
+## Current State
 
-<!-- A brief description of what you expected to happen. -->
+<!-- Describe the current CI/CD setup or process -->
 
-#### Implementation
+## Proposed Improvement
 
-<!-- Specifics on the approach to fulfilling the feature request. -->
+<!-- Describe what you want to improve or implement -->
 
-#### Acceptance Tests
+## Benefits
 
-<!-- Stipulations of functional behavior or non-functional items that must be in-place in order for the issue to be closed. -->
+<!-- Why is this improvement needed? What problems does it solve? -->
+
+## Implementation Details
+
+<!-- Technical details about the proposed solution -->
+
+## Testing Strategy
+
+<!-- How will this change be tested? -->
+
+## Rollback Plan
+
+<!-- How can this be rolled back if issues arise? -->
+
+## Security Considerations
+
+<!-- Any security implications to consider -->
+
+## Documentation Updates
+
+<!-- What documentation needs to be updated? -->
+
+## Checklist
+
+- [ ] I have researched existing CI/CD practices
+- [ ] I have considered the impact on the development workflow
+- [ ] I have identified security implications
+- [ ] I am willing to help implement and test this improvement
+- [ ] I have considered backward compatibility
 
 ---
 
-### Checklist
+**Thank you for helping improve our development infrastructure!** 🛠️
 
--   [ ] I have read and followed the project's code of conduct.
--   [ ] I have searched for similar issues before creating this one.
--   [ ] I have provided all the necessary information to understand and reproduce the issue.
--   [ ] I am willing to contribute to the resolution of this issue.
-
----
-
-Thank you for contributing to our project! We appreciate your help in improving it.
-
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
-
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+📚 [Contributing Guidelines](https://github.com/sugarlabs/musicblocks/blob/master/README.md) | � [Community Chat](https://matrix.to/#/#sugar:matrix.org)

@@ -1,0 +1,137 @@
+name: 🐛 Bug Report (Form)
+description: Report a bug using a structured form
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug! Please fill out this form to help us understand and reproduce the issue.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug
+      placeholder: "Describe what went wrong..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: List the exact steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What you expected to happen
+      placeholder: "Describe what should have happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened
+      placeholder: "Describe what actually happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: console-errors
+    attributes:
+      label: Console Errors
+      description: Copy and paste any errors from the browser console (F12 > Console tab)
+      render: shell
+      placeholder: "Paste console errors here..."
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating System
+      description: Which operating system are you using?
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (latest)
+        - macOS (older version)
+        - Ubuntu/Linux
+        - Other Linux distribution
+        - ChromeOS
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using?
+      options:
+        - Chrome (latest)
+        - Chrome (older version)
+        - Firefox (latest)
+        - Firefox (older version)
+        - Safari (latest)
+        - Safari (older version)
+        - Edge (latest)
+        - Edge (older version)
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: device-type
+    attributes:
+      label: Device Type
+      description: What type of device are you using?
+      options:
+        - Desktop/Laptop
+        - Tablet
+        - Mobile Phone
+        - Chromebook
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: music-blocks-version
+    attributes:
+      label: Music Blocks Version
+      description: What version of Music Blocks are you using?
+      placeholder: "e.g., v3.4.1 or commit hash"
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: "Any additional information that might be helpful..."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for existing issues before creating this one
+          required: true
+        - label: I have provided all the necessary information to reproduce the issue
+          required: true
+        - label: I have included console errors (if any)
+          required: false
+        - label: I have tested this on the latest version of Music Blocks
+          required: false
+        - label: I am willing to help test potential fixes
+          required: false
