@@ -809,14 +809,14 @@ function setupMediaBlocks(activity) {
             // Set help string for the block
             if (_THIS_IS_MUSIC_BLOCKS_) {
                 this.setHelpString([
-                    _("The Avatar block is used to change the appearance of the mouse."),
+                    _("The Avatar block is used to change the appearance of the mouse using images (PNG, JPG, GIF, SVG, WebP)."),
                     "documentation",
                     null,
                     "turtleshell"
                 ]);
             } else {
                 this.setHelpString([
-                    _("The Avatar block is used to change the appearance of the turtle."),
+                    _("The Avatar block is used to change the appearance of the turtle using images (PNG, JPG, GIF, SVG, WebP)."),
                     "documentation",
                     null,
                     "turtleshell"
@@ -877,7 +877,7 @@ function setupMediaBlocks(activity) {
 
             // Set help string for the block
             this.setHelpString([
-                _("The Show block is used to display text or images on the canvas."),
+                _("The Show block is used to display text or images (PNG, JPG, GIF, SVG, WebP) on the canvas."),
                 "documentation",
                 ""
             ]);
@@ -935,7 +935,7 @@ function setupMediaBlocks(activity) {
 
             // Set help string for the block
             this.setHelpString([
-                _("The Media block is used to import an image."),
+                _("The Media block is used to import images including PNG, JPG, GIF, SVG, and WebP formats."),
                 "documentation",
                 null,
                 "turtleshell"
