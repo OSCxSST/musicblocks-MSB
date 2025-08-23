@@ -26,6 +26,7 @@
     <link rel="preload" href="dist/css/windows.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="lib/materialize-iso.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="css/darkmode.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="css/auth.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" as="video" href="loading-animation.webm" type="video/webm">
     <link rel="preload" as="video" href="loading-animation.mp4" type="video/mp4">
     <link rel="preload" as="image" href="loading-animation-ja.svg">
@@ -62,6 +63,14 @@
     <script src="lib/astring.min.js" defer></script>
 
     <script src="lib/acorn.min.js" defer></script>
+
+    <!-- Electron Integration for Desktop App -->
+    <script src="electron-integration.js" defer></script>
+
+    <!-- Google Authentication -->
+    <script src="js/auth/auth-config.js" defer></script>
+    <script src="js/auth/GoogleAuth.js" defer></script>
+    <script src="js/auth/AuthManager.js" defer></script>
 
     <link rel="prefetch" type="application/l10n" href="./localization.ini" />
 
@@ -291,6 +300,21 @@
                         </ul>
 
                         <ul class="main right">
+                            <!-- Authentication Section -->
+                            <li>
+                                <div id="auth-container">
+                                    <div id="auth-error"></div>
+                                    <button id="google-signin-btn" class="waves-effect waves-light btn blue">
+                                        <i class="material-icons left">account_circle</i>Sign In
+                                    </button>
+                                    <div id="user-display">
+                                        <!-- User info will be populated here -->
+                                    </div>
+                                    <button id="google-signout-btn" class="waves-effect waves-light btn red">
+                                        <i class="material-icons left">exit_to_app</i>Sign Out
+                                    </button>
+                                </div>
+                            </li>
                             <li>
                                 <a id="FullScreen" class="FullScreen tooltipped dropdown-trigger" data-position="bottom"
                                 onclick="setIcon()">
