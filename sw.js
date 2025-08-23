@@ -1,130 +1,213 @@
 /*
-  global
-
-  offlineFallbackPage, divInstall
+  Enhanced Service Worker for Music Blocks Offline Support
 */
 
-// This is the "Offline page" service worker
+const CACHE_NAME = "musicblocks-cache-v1";
+const RUNTIME_CACHE = "musicblocks-runtime-cache-v1";
 
-const CACHE = "pwabuilder-precache";
+// Core files that should be cached for offline functionality
 const precacheFiles = [
-    /* Add an array of files to precache for your app */
-    "./index.html"
+    "./",
+    "./index.html",
+    "./manifest.json",
+    "./css/style.css",
+    "./css/keyboard.css", 
+    "./css/themes.css",
+    "./css/activities.css",
+    "./lib/materialize-iso.css",
+    "./fonts/material-icons.css",
+    "./activity/activity-icon-color-512.png",
+    "./images/logo.svg",
+    // Core JavaScript libraries
+    "./lib/jquery-2.1.4.min.js",
+    "./lib/jquery-ui.js",
+    "./lib/materialize.min.js",
+    "./lib/webL10n.js",
+    "./lib/Tone.js",
+    "./lib/raphael.min.js",
+    "./lib/easeljs.min.js",
+    "./lib/tweenjs.min.js",
+    "./lib/require.js",
+    // Essential Music Blocks files
+    "./js/loader.js",
+    "./localization.ini",
+    // Fallback offline page
+    "./offline.html"
 ];
 
+// Install event - cache core files
 self.addEventListener("install", function (event) {
-    // eslint-disable-next-line no-console
-    console.log("[PWA Builder] Install Event processing");
-
-    // eslint-disable-next-line no-console
-    console.log("[PWA Builder] Skip waiting on install");
-    self.skipWaiting();
-
+    console.log("[Music Blocks SW] Install Event processing");
+    
     event.waitUntil(
-        caches.open(CACHE).then(function (cache) {
-            // eslint-disable-next-line no-console
-            console.log("[PWA Builder] Caching pages during install");
-            return cache.addAll(precacheFiles);
+        caches.open(CACHE_NAME)
+            .then(function (cache) {
+                console.log("[Music Blocks SW] Caching core files during install");
+                return cache.addAll(precacheFiles);
+            })
+            .then(function() {
+                console.log("[Music Blocks SW] Skip waiting on install");
+                return self.skipWaiting();
+            })
+    );
+});
+
+// Activate event - clean up old caches
+self.addEventListener("activate", function (event) {
+    console.log("[Music Blocks SW] Activate Event processing");
+    
+    event.waitUntil(
+        caches.keys().then(function(cacheNames) {
+            return Promise.all(
+                cacheNames.map(function(cacheName) {
+                    if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+                        console.log("[Music Blocks SW] Deleting old cache:", cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(function() {
+            console.log("[Music Blocks SW] Claiming clients for current page");
+            return self.clients.claim();
         })
     );
 });
 
-// Allow sw to control of current page
-self.addEventListener("activate", function (event) {
-    // eslint-disable-next-line no-console
-    console.log("[PWA Builder] Claiming clients for current page");
-    event.waitUntil(self.clients.claim());
-});
-
-function updateCache(request, response) {
-    if (response.status === 206) {
-        console.log("Partial response is unsupported for caching.");
-        return Promise.resolve();
-    }
-    return caches.open(CACHE).then(function (cache) {
-        return cache.put(request, response);
-    });
-}
-
-function fromCache(request) {
-    // Check to see if you have it in the cache
-    // Return response
-    // If not in the cache, then return
-    return caches.open(CACHE).then(function (cache) {
-        return cache.match(request).then(function (matching) {
-            if (!matching || matching.status === 404) {
-                return Promise.reject("no-match");
-            }
-            
-            return matching;
-        });
-    });
-}
-
-// If any fetch fails, it will look for the request in the cache and
-// serve it from there first
+// Fetch event - serve from cache, fallback to network
 self.addEventListener("fetch", function (event) {
-    if (event.request.method !== "GET") return;
+    // Skip non-GET requests
+    if (event.request.method !== "GET") {
+        return;
+    }
+
+    // Skip chrome-extension and other non-http requests
+    if (!event.request.url.startsWith('http')) {
+        return;
+    }
 
     event.respondWith(
-        fromCache(event.request).then(
-            function (response) {
-                // The response was found in the cache so we responde
-                // with it and update the entry
-
-                // This is where we call the server to get the newest
-                // version of the file to use the next time we show view
-                event.waitUntil(
-                    fetch(event.request).then(function (response) {
-                        if (response.ok) {
-                            return updateCache(event.request, response);
-                        }
-                    })
-                );
-
-                return response;
-            },
-            async function () {
-                // The response was not found in the cache so we look
-                // for it on the server
-                try {
-                    const response = await fetch(event.request);
-                    // If request was success, add or update it in the cache
-                    if (response.ok) {
-                        event.waitUntil(updateCache(event.request, response.clone()));
-                    }
+        caches.match(event.request)
+            .then(function(response) {
+                // Return cached version if available
+                if (response) {
+                    console.log("[Music Blocks SW] Serving from cache:", event.request.url);
                     return response;
-                } catch (error) {
-                    // eslint-disable-next-line no-console
-                    console.log("[PWA Builder] Network request failed and no cache." + error);
                 }
-            }
-        )
+
+                // Otherwise fetch from network
+                return fetch(event.request)
+                    .then(function(response) {
+                        // Don't cache if not a valid response
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+
+                        // Cache runtime files
+                        if (shouldCacheRequest(event.request)) {
+                            const responseToCache = response.clone();
+                            caches.open(RUNTIME_CACHE)
+                                .then(function(cache) {
+                                    cache.put(event.request, responseToCache);
+                                });
+                        }
+
+                        return response;
+                    })
+                    .catch(function(error) {
+                        console.log("[Music Blocks SW] Network request failed:", error);
+                        
+                        // Return offline page for navigation requests
+                        if (event.request.mode === 'navigate') {
+                            return caches.match('./offline.html');
+                        }
+                        
+                        // Return a generic offline response for other requests
+                        return new Response('Offline - content not available', {
+                            status: 503,
+                            statusText: 'Service Unavailable',
+                        });
+                    });
+            })
     );
 });
 
-self.addEventListener("beforeinstallprompt", (event) => {
-    // eslint-disable-next-line no-console
-    console.log("done", "beforeinstallprompt", event);
-    // Stash the event so it can be triggered later.
-    window.deferredPrompt = event;
-    // Remove the "hidden" class from the install button container
-    divInstall.classList.toggle("hidden", false);
+// Helper function to determine if request should be cached
+function shouldCacheRequest(request) {
+    const url = new URL(request.url);
+    
+    // Cache same-origin requests
+    if (url.origin === location.origin) {
+        // Don't cache API calls or dynamic content
+        if (url.pathname.includes('/api/') || 
+            url.pathname.includes('/socket.io/') ||
+            url.search.includes('_') || // Avoid cache-busting URLs
+            url.pathname.includes('hot-update')) {
+            return false;
+        }
+        return true;
+    }
+    
+    // Cache specific external resources (fonts, CDN resources)
+    if (url.hostname === 'fonts.googleapis.com' ||
+        url.hostname === 'fonts.gstatic.com' ||
+        url.hostname === 'cdnjs.cloudflare.com') {
+        return true;
+    }
+    
+    return false;
+}
+
+// Message event for manual cache updates
+self.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+    
+    if (event.data && event.data.type === 'UPDATE_CACHE') {
+        // Force update cache
+        event.waitUntil(
+            caches.open(CACHE_NAME).then(function(cache) {
+                return cache.addAll(precacheFiles);
+            })
+        );
+    }
 });
 
-// This is an event that can be fired from your page to tell the SW to
-// update the offline page
-self.addEventListener("refreshOffline", function () {
-    const offlinePageRequest = new Request(offlineFallbackPage);
-
-    return fetch(offlineFallbackPage).then(function (response) {
-        return caches.open(CACHE).then(function (cache) {
-            // eslint-disable-next-line no-console
-            console.log("[PWA Builder] Offline page updated from refreshOffline event: " + response.url);
-            return cache.put(offlinePageRequest, response);
-        });
-    });
+// Background sync for when connection is restored
+self.addEventListener('sync', function(event) {
+    if (event.tag === 'background-sync') {
+        console.log("[Music Blocks SW] Background sync triggered");
+        event.waitUntil(
+            // Update cache when connection is restored
+            caches.open(CACHE_NAME).then(function(cache) {
+                return cache.addAll(precacheFiles);
+            })
+        );
+    }
 });
 
+// Push notifications (for future features)
+self.addEventListener('push', function(event) {
+    if (event.data) {
+        const data = event.data.json();
+        const options = {
+            body: data.body,
+            icon: './activity/activity-icon-color-512.png',
+            badge: './activity/activity-icon-color-512.png',
+            data: data.data
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification(data.title, options)
+        );
+    }
+});
 
-
+// Notification click handler
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    
+    event.waitUntil(
+        clients.openWindow('/')
+    );
+});

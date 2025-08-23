@@ -10,13 +10,26 @@
     "url": "https://github.com/sugarlabs/musicblocks/issues"
   },
   "amd": {},
+  "main": "electron.js",
+  "homepage": "./",
   "scripts": {
     "lint": "eslint js/**/*.js",
     "serve": "http-server -a 127.0.0.1 -p 3000 --gzip --brotli",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder",
+    "preelectron-pack": "npm run build",
+    "build": "npm run lint",
+    "dist": "npm run build && electron-builder --publish=never",
+    "dist-win": "npm run build && electron-builder --win --publish=never",
+    "dist-mac": "npm run build && electron-builder --mac --publish=never",
+    "dist-linux": "npm run build && electron-builder --linux --publish=never",
+    "validate": "node validate-setup.js",
+    "postinstall": "node validate-setup.js"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
@@ -24,7 +37,10 @@
     "@babel/preset-env": "^7.11.0",
     "babel-eslint": "^10.1.0",
     "clean-css": "^4.2.4",
+    "concurrently": "^9.2.0",
     "cypress": "^14.0.2",
+    "electron": "^37.3.1",
+    "electron-builder": "^26.0.12",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-standard": "^14.1.1",
@@ -38,7 +54,8 @@
     "gulp-uglify": "^3.0.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "wait-on": "^8.0.4"
   },
   "dependencies": {
     "@tonejs/midi": "^2.0.28",
@@ -56,5 +73,97 @@
     "node": "^24.2.0",
     "node-static": "^0.7.11",
     "tone": "^15.0.4"
+  },
+  "build": {
+    "appId": "org.sugarlabs.musicblocks",
+    "productName": "Music Blocks",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "**/*",
+      "!cypress/**/*",
+      "!cypress.config.js",
+      "!screenshots/**/*",
+      "!dist-electron/**/*",
+      "!node_modules/.cache/**/*",
+      "!{.eslintrc.js,.gitignore,.vscode}"
+    ],
+    "extraResources": [
+      {
+        "from": "sounds/",
+        "to": "sounds/"
+      },
+      {
+        "from": "images/",
+        "to": "images/"
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.education",
+      "icon": "activity/activity-icon-color-512.png",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "icon": "activity/activity-icon-color-512.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "activity/activity-icon-color-512.png",
+      "category": "Education",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "publish": null
   }
 }
