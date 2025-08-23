@@ -456,9 +456,269 @@ class SaveInterface {
      * @instance
      */
     saveBlockArtworkPNG(activity) {
-        activity.printBlockPNG().then((pngDataUrl) => {
-            activity.save.download("png", pngDataUrl, null);
-        });
+        const pngDataUrl = activity.canvas.toDataURL("image/png");
+        activity.save.download("png", pngDataUrl, null);
+    }
+
+    /**
+     * Exports mouse animation as MP4 video without audio.
+     * Records the canvas animation and saves it as an MP4 file.
+     *
+     * @param {SaveInterface} activity - The activity object to export.
+     * @returns {Promise<void>} A promise that resolves when the export is complete.
+     * @method
+     * @instance
+     */
+    async exportMouseAnimationMP4(activity) {
+        try {
+            // Check if MediaRecorder is supported
+            if (!window.MediaRecorder) {
+                alert(_("Your browser does not support video recording. Please use a modern browser."));
+                return;
+            }
+
+            // Create a canvas stream for recording
+            const canvas = activity.canvas;
+            const stream = canvas.captureStream(30); // 30 FPS
+            
+            // Create MediaRecorder with MP4-compatible format
+            const options = {
+                mimeType: 'video/webm;codecs=vp9',
+                videoBitsPerSecond: 5000000 // 5 Mbps for good quality
+            };
+            
+            const mediaRecorder = new MediaRecorder(stream, options);
+            const chunks = [];
+            
+            // Set up recording event handlers
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+            
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                
+                // Prompt for filename
+                const filename = window.prompt(_("Enter filename for mouse animation:"), "mouse-animation");
+                if (filename && filename.trim() !== "") {
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = url;
+                    downloadLink.download = `${filename.trim()}.webm`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }
+                
+                URL.revokeObjectURL(url);
+            };
+            
+            // Start recording
+            mediaRecorder.start();
+            
+            // Show recording indicator and stop button
+            activity.textMsg(_("Recording mouse animation... Click stop when done."), 3000);
+            this._showStopRecordingButton(activity, "mouse-animation");
+            
+            // Store the recorder for stopping later
+            activity._mouseAnimationRecorder = mediaRecorder;
+            
+        } catch (error) {
+            console.error("Error starting mouse animation recording:", error);
+            alert(_("Error starting recording: ") + error.message);
+        }
+    }
+
+    /**
+     * Stops the current mouse animation recording and saves the file.
+     *
+     * @param {SaveInterface} activity - The activity object.
+     * @returns {void}
+     * @method
+     * @instance
+     */
+    stopMouseAnimationRecording(activity) {
+        if (activity._mouseAnimationRecorder && activity._mouseAnimationRecorder.state === 'recording') {
+            activity._mouseAnimationRecorder.stop();
+            activity.textMsg(_("Mouse animation recording saved!"), 3000);
+            this._hideStopRecordingButton(activity);
+        }
+    }
+
+    /**
+     * Exports mouse animation with music as MP4 video.
+     * Records both the canvas animation and audio output, then combines them.
+     *
+     * @param {SaveInterface} activity - The activity object to export.
+     * @returns {Promise<void>} A promise that resolves when the export is complete.
+     * @method
+     * @instance
+     */
+    async exportMouseAnimationWithMusicMP4(activity) {
+        try {
+            // Check if MediaRecorder is supported
+            if (!window.MediaRecorder) {
+                alert(_("Your browser does not support video recording. Please use a modern browser."));
+                return;
+            }
+
+            // Check if audio context is available
+            if (!activity.logo || !activity.logo.synth) {
+                alert(_("No music available to record. Please create some music first."));
+                return;
+            }
+
+            // Create canvas stream
+            const canvas = activity.canvas;
+            const canvasStream = canvas.captureStream(30); // 30 FPS
+            
+            // Get audio stream from the synth
+            let audioStream = null;
+            try {
+                // Try to get audio from Tone.js context if available
+                if (window.Tone && window.Tone.getContext) {
+                    const audioContext = window.Tone.getContext();
+                    const dest = audioContext.createMediaStreamDestination();
+                    
+                    // Connect all active synths to the destination
+                    if (activity.logo.synth.instruments) {
+                        for (const turtleId in activity.logo.synth.instruments) {
+                            const turtleInstruments = activity.logo.synth.instruments[turtleId];
+                            for (const synthId in turtleInstruments) {
+                                const synth = turtleInstruments[synthId];
+                                if (synth && synth.connect) {
+                                    synth.connect(dest);
+                                }
+                            }
+                        }
+                    }
+                    
+                    audioStream = dest.stream;
+                }
+            } catch (audioError) {
+                console.warn("Could not capture audio stream:", audioError);
+                // Continue without audio if we can't capture it
+            }
+            
+            // Combine video and audio streams
+            const tracks = [...canvasStream.getVideoTracks()];
+            if (audioStream) {
+                tracks.push(...audioStream.getAudioTracks());
+            }
+            
+            const combinedStream = new MediaStream(tracks);
+            
+            // Create MediaRecorder with combined stream
+            const options = {
+                mimeType: 'video/webm;codecs=vp9',
+                videoBitsPerSecond: 5000000, // 5 Mbps for good quality
+                audioBitsPerSecond: 128000 // 128 kbps for audio
+            };
+            
+            const mediaRecorder = new MediaRecorder(combinedStream, options);
+            const chunks = [];
+            
+            // Set up recording event handlers
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+            
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                
+                // Prompt for filename
+                const filename = window.prompt(_("Enter filename for mouse animation with music:"), "mouse-animation-with-music");
+                if (filename && filename.trim() !== "") {
+                    const downloadLink = document.createElement("a");
+                    downloadLink.href = url;
+                    downloadLink.download = `${filename.trim()}.webm`;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                }
+                
+                URL.revokeObjectURL(url);
+            };
+            
+            // Start recording
+            mediaRecorder.start();
+            
+            // Show recording indicator and stop button
+            const message = audioStream ? 
+                _("Recording mouse animation with music... Click stop when done.") :
+                _("Recording mouse animation... Audio capture failed, recording video only. Click stop when done.");
+            activity.textMsg(message, 3000);
+            this._showStopRecordingButton(activity, "mouse-animation-with-music");
+            
+            // Store the recorder for stopping later
+            activity._mouseAnimationWithMusicRecorder = mediaRecorder;
+            
+        } catch (error) {
+            console.error("Error starting mouse animation with music recording:", error);
+            alert(_("Error starting recording: ") + error.message);
+        }
+    }
+
+    /**
+     * Stops the current mouse animation with music recording and saves the file.
+     *
+     * @param {SaveInterface} activity - The activity object.
+     * @returns {void}
+     * @method
+     * @instance
+     */
+    stopMouseAnimationWithMusicRecording(activity) {
+        if (activity._mouseAnimationWithMusicRecorder && activity._mouseAnimationWithMusicRecorder.state === 'recording') {
+            activity._mouseAnimationWithMusicRecorder.stop();
+            activity.textMsg(_("Mouse animation with music recording saved!"), 3000);
+            this._hideStopRecordingButton(activity);
+        }
+    }
+
+    /**
+     * Shows the stop recording button in the save menu.
+     *
+     * @param {SaveInterface} activity - The activity object.
+     * @param {string} recordingType - The type of recording ("mouse-animation" or "mouse-animation-with-music").
+     * @returns {void}
+     * @method
+     * @instance
+     * @private
+     */
+    _showStopRecordingButton(activity, recordingType) {
+        const stopButton = document.getElementById("stop-mouse-animation-recording");
+        if (stopButton) {
+            stopButton.style.display = "block";
+            stopButton.textContent = _("Stop mouse animation recording");
+            stopButton.onclick = () => {
+                if (recordingType === "mouse-animation") {
+                    this.stopMouseAnimationRecording(activity);
+                } else if (recordingType === "mouse-animation-with-music") {
+                    this.stopMouseAnimationWithMusicRecording(activity);
+                }
+            };
+        }
+    }
+
+    /**
+     * Hides the stop recording button.
+     *
+     * @param {SaveInterface} activity - The activity object.
+     * @returns {void}
+     * @method
+     * @instance
+     * @private
+     */
+    _hideStopRecordingButton(activity) {
+        const stopButton = document.getElementById("stop-mouse-animation-recording");
+        if (stopButton) {
+            stopButton.style.display = "none";
+        }
     }
 
     /**

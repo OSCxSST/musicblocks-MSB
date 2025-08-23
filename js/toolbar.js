@@ -89,6 +89,8 @@ class Toolbar {
                 ["save-mxml", _("Save sheet music as MusicXML"), "innerHTML"],
                 ["save-blockartwork-svg", _("Save block artwork as SVG"), "innerHTML"],
                 ["save-blockartwork-png", _("Save block artwork as PNG"), "innerHTML"],
+                ["export-mouse-animation-mp4", _("Export mouse animation as MP4"), "innerHTML"],
+                ["export-mouse-animation-with-music-mp4", _("Export mouse animation with music as MP4"), "innerHTML"],
                 ["new-project", _("Confirm"), "innerHTML"],
                 ["enUS", _("English (United States)"), "innerHTML"],
                 ["enUK", _("English (United Kingdom)"), "innerHTML"],
@@ -222,6 +224,8 @@ class Toolbar {
                 ["save-png", _("Save turtle artwork as PNG"), "innerHTML"],
                 ["save-blockartwork-svg", _("Save block artwork as SVG"), "innerHTML"],
                 ["save-blockartwork-png", _("Save block artwork as PNG"), "innerHTML"],
+                ["export-mouse-animation-mp4", _("Export mouse animation as MP4"), "innerHTML"],
+                ["export-mouse-animation-with-music-mp4", _("Export mouse animation with music as MP4"), "innerHTML"],
                 ["new-project", _("Confirm"), "innerHTML"],
                 ["enUS", _("English (United States)"), "innerHTML"],
                 ["enUK", _("English (United Kingdom)"), "innerHTML"],
@@ -623,7 +627,9 @@ class Toolbar {
         abc_onclick,
         mxml_onclick,
         blockartworksvg_onclick,
-        blockartworkpng_onclick
+        blockartworkpng_onclick,
+        exportMouseAnimationMP4_onclick,
+        exportMouseAnimationWithMusicMP4_onclick
     ) {
         const saveButton = docById("saveButton");
         const saveButtonAdvanced = docById("saveButtonAdvanced");
@@ -742,6 +748,21 @@ class Toolbar {
                 saveArtworkPNG.onclick = () => {
                     blockartworkpng_onclick(this.activity);
                 };
+                
+                // Add handlers for new export options
+                const exportMouseAnimationMP4 = docById("export-mouse-animation-mp4");
+                if (exportMouseAnimationMP4) {
+                    exportMouseAnimationMP4.onclick = () => {
+                        exportMouseAnimationMP4_onclick(this.activity);
+                    };
+                }
+                
+                const exportMouseAnimationWithMusicMP4 = docById("export-mouse-animation-with-music-mp4");
+                if (exportMouseAnimationWithMusicMP4) {
+                    exportMouseAnimationWithMusicMP4.onclick = () => {
+                        exportMouseAnimationWithMusicMP4_onclick(this.activity);
+                    };
+                }
             };
         }
     }

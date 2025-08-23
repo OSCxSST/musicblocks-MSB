@@ -1857,7 +1857,9 @@ class Activity {
                 activity.save.saveAbc.bind(activity.save),
                 activity.save.saveMxml.bind(activity.save),
                 activity.save.saveBlockArtwork.bind(activity.save),
-                activity.save.saveBlockArtworkPNG.bind(activity.save)
+                activity.save.saveBlockArtworkPNG.bind(activity.save),
+                activity.save.exportMouseAnimationMP4.bind(activity.save),
+                activity.save.exportMouseAnimationWithMusicMP4.bind(activity.save)
             );
 
             // Regenerate palettes
@@ -6403,7 +6405,9 @@ class Activity {
                 this.save.saveAbc.bind(this.save),
                 this.save.saveMxml.bind(this.save),
                 this.save.saveBlockArtwork.bind(this.save),
-                this.save.saveBlockArtworkPNG.bind(this.save)
+                this.save.saveBlockArtworkPNG.bind(this.save),
+                this.save.exportMouseAnimationMP4.bind(this.save),
+                this.save.exportMouseAnimationWithMusicMP4.bind(this.save)
             );
             this.toolbar.renderPlanetIcon(this.planet, doOpenSamples);
             this.toolbar.renderMenuIcon(showHideAuxMenu);

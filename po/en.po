@@ -3560,6 +3560,38 @@ msgstr ""
 msgid "Save mouse artwork as SVG"
 msgstr ""
 
+#: js/SaveInterface.js:1
+msgid "Export mouse animation as MP4"
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Export mouse animation with music as MP4"
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Stop mouse animation recording"
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Recording mouse animation... Click stop when done."
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Recording mouse animation with music... Click stop when done."
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Recording mouse animation... Audio capture failed, recording video only. Click stop when done."
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Mouse animation recording saved!"
+msgstr ""
+
+#: js/SaveInterface.js:1
+msgid "Mouse animation with music recording saved!"
+msgstr ""
+
 #: js/toolbar.js:85
 #: js/toolbar.js:149
 #: js/turtledefs.js:569
