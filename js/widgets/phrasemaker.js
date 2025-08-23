@@ -517,6 +517,12 @@ class PhraseMaker {
             this._stopOrCloseClicked = true;
             this.activity.hideMsgs();
             docById("wheelDivptm").style.display = "none";
+            
+            // Clear the meter check interval
+            if (this._meterCheckInterval) {
+                clearInterval(this._meterCheckInterval);
+            }
+            
             widgetWindow.destroy();
         };
 
@@ -1073,6 +1079,14 @@ class PhraseMaker {
             this.widgetWindow.sendToCenter();
             this.inInitial = false;
         }
+
+        // Add bar lines based on the current meter
+        this._addBarLines();
+        
+        // Set up a periodic check for meter changes (every 2 seconds)
+        this._meterCheckInterval = setInterval(() => {
+            this._checkMeterAndUpdateBarLines();
+        }, 2000);
     }
 
     /**
@@ -2647,6 +2661,8 @@ class PhraseMaker {
 
         this.makeClickable();
 
+        // Update bar lines after sorting
+        this._addBarLines();
     }
 
     /**
@@ -3038,6 +3054,9 @@ class PhraseMaker {
         cell.innerHTML = noteValueToDisplay;
         cell.style.backgroundColor = platformColor.rhythmcellcolor;
         this._matrixHasTuplets = true;
+        
+        // Update bar lines after adding tuplet
+        this._addBarLines();
     }
 
     /**
@@ -3149,6 +3168,9 @@ class PhraseMaker {
                 cell.style.backgroundColor = platformColor.tupletBackground;
             }
         }
+
+        // Update bar lines after adding notes
+        this._addBarLines();
     }
 
     /**
@@ -3264,6 +3286,13 @@ class PhraseMaker {
         this.activity.blocks.sendStackToTrash(this.activity.blocks.blockList[blockToDelete]);
         this.activity.blocks.adjustDocks(this.blockNo, true);
         this.activity.refreshCanvas();
+        
+        // Update bar lines after deleting rhythm block
+        setTimeout(() => {
+            if (this._addBarLines) {
+                this._addBarLines();
+            }
+        }, 100);
     }
 
     /**
@@ -5476,5 +5505,158 @@ class PhraseMaker {
         // Create a new stack for the chunk.
         this.activity.blocks.loadNewBlocks(newStack);
         activity.textMsg(_("New action block generated."), 3000 );
+    }
+
+    /**
+     * Gets the current meter information from the turtle's singer.
+     * @returns {object} Object containing beatsPerMeasure and noteValuePerBeat.
+     */
+    _getCurrentMeter() {
+        // Get the current turtle (usually turtle 0)
+        const turtle = 0;
+        const tur = this.activity.logo.turtles.ithTurtle(turtle);
+        if (tur && tur.singer) {
+            return {
+                beatsPerMeasure: tur.singer.beatsPerMeasure || 4,
+                noteValuePerBeat: tur.singer.noteValuePerBeat || 1/4
+            };
+        }
+        return { beatsPerMeasure: 4, noteValuePerBeat: 1/4 };
+    }
+
+    /**
+     * Calculates the positions where bar lines should be drawn based on the current meter.
+     * @returns {Array<number>} Array of pixel positions for bar lines.
+     */
+    _calculateBarLinePositions() {
+        const meter = this._getCurrentMeter();
+        const barLinePositions = [];
+        
+        // Calculate the width of one measure (one complete bar)
+        let measureWidth = 0;
+        let currentPosition = 0;
+        
+        // Go through all the rhythm blocks to calculate total width
+        for (let i = 0; i < this.activity.logo.tupletRhythms.length; i++) {
+            const noteValue = this.activity.logo.tupletRhythms[i][2];
+            const noteWidth = this._noteWidth(noteValue);
+            measureWidth += noteWidth;
+            
+            // Check if we've completed a measure
+            if (this._isMeasureComplete(currentPosition, meter)) {
+                barLinePositions.push(currentPosition);
+            }
+            
+            currentPosition += noteWidth;
+        }
+        
+        return barLinePositions;
+    }
+
+    /**
+     * Checks if a measure is complete at the given position.
+     * @param {number} position - Current position in pixels.
+     * @param {object} meter - Meter information with beatsPerMeasure and noteValuePerBeat.
+     * @returns {boolean} True if a measure is complete at this position.
+     */
+    _isMeasureComplete(position, meter) {
+        // This method is not used in the current implementation
+        // We calculate measure boundaries directly in _addBarLines
+        return false;
+    }
+
+    /**
+     * Adds bar lines to the grid at appropriate positions.
+     */
+    _addBarLines() {
+        // Clear existing bar lines first
+        this._clearBarLines();
+        
+        // Check if we have any rhythm data
+        if (!this.activity.logo.tupletRhythms || this.activity.logo.tupletRhythms.length === 0) {
+            return;
+        }
+        
+        const meter = this._getCurrentMeter();
+        const beatsPerMeasure = meter.beatsPerMeasure;
+        const noteValuePerBeat = meter.noteValuePerBeat;
+        
+        // Calculate how many notes make up one measure
+        const notesPerMeasure = beatsPerMeasure / noteValuePerBeat;
+        
+        let currentNoteCount = 0;
+        let currentPosition = 0;
+        
+        // Go through the rhythm blocks and add bar lines
+        for (let i = 0; i < this.activity.logo.tupletRhythms.length; i++) {
+            const noteValue = this.activity.logo.tupletRhythms[i][2];
+            const noteWidth = this._noteWidth(noteValue);
+            
+            currentNoteCount += 1 / noteValue;
+            currentPosition += noteWidth;
+            
+            // If we've completed a measure, add a bar line
+            if (currentNoteCount >= notesPerMeasure) {
+                this._drawBarLine(currentPosition);
+                currentNoteCount = 0; // Reset for next measure
+            }
+        }
+    }
+
+    /**
+     * Clears all existing bar lines from the grid.
+     */
+    _clearBarLines() {
+        const existingBarLines = this.widgetWindow.getWidgetBody().querySelectorAll('.bar-line');
+        existingBarLines.forEach(barLine => barLine.remove());
+    }
+
+    /**
+     * Draws a bar line at the specified position.
+     * @param {number} position - The position in pixels where to draw the bar line.
+     */
+    _drawBarLine(position) {
+        // Create a bar line element
+        const barLine = document.createElement('div');
+        barLine.className = 'bar-line';
+        
+        // Calculate the left offset to account for the fixed columns (row labels and note labels)
+        const leftOffset = PhraseMaker.BUTTONSIZE * this._cellScale + 2 * Math.floor(MATRIXSOLFEWIDTH * this._cellScale);
+        
+        barLine.style.cssText = `
+            position: absolute;
+            left: ${leftOffset + position}px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: #333;
+            z-index: 10;
+            pointer-events: none;
+        `;
+        
+        // Add the bar line to the widget body
+        this.widgetWindow.getWidgetBody().appendChild(barLine);
+    }
+
+    /**
+     * Checks if the meter has changed and updates bar lines accordingly.
+     */
+    _checkMeterAndUpdateBarLines() {
+        const currentMeter = this._getCurrentMeter();
+        
+        // If this is the first check, store the meter
+        if (!this._lastMeter) {
+            this._lastMeter = currentMeter;
+            return;
+        }
+        
+        // Check if meter has changed
+        if (currentMeter.beatsPerMeasure !== this._lastMeter.beatsPerMeasure ||
+            currentMeter.noteValuePerBeat !== this._lastMeter.noteValuePerBeat) {
+            
+            // Update bar lines with new meter
+            this._addBarLines();
+            this._lastMeter = currentMeter;
+        }
     }
 }
