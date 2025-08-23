@@ -723,6 +723,15 @@ Turtle.TurtleView = class {
             this.activity.refreshCanvas();
         };
 
+        // Add error handling for image loading failures
+        image.onerror = (error) => {
+            console.error("Failed to load image for show block:", error);
+            console.error("Image source:", myImage);
+            if (this.activity && this.activity.errorMsg) {
+                this.activity.errorMsg("Failed to load image. Make sure the file is a valid image format (PNG, JPG, GIF, SVG, WebP).");
+            }
+        };
+
         image.src = myImage;
     }
 
@@ -753,6 +762,15 @@ Turtle.TurtleView = class {
             bitmap.regY = image.height / 2;
             bitmap.rotation = turtle.orientation;
             turtle.activity.refreshCanvas();
+        };
+
+        // Add error handling for image loading failures
+        image.onerror = (error) => {
+            console.error("Failed to load image from URL:", error);
+            console.error("Image URL:", myURL);
+            if (turtle.activity && turtle.activity.errorMsg) {
+                turtle.activity.errorMsg("Failed to load image from URL. Make sure the URL is accessible and points to a valid image format (PNG, JPG, GIF, SVG, WebP).");
+            }
         };
     }
 
@@ -817,6 +835,15 @@ Turtle.TurtleView = class {
             }
 
             this.activity.refreshCanvas();
+        };
+
+        // Add error handling for image loading failures
+        image.onerror = (error) => {
+            console.error("Failed to load image for turtle shell:", error);
+            console.error("Image source:", myImage);
+            if (this.activity && this.activity.errorMsg) {
+                this.activity.errorMsg("Failed to load image for turtle shell. Make sure the file is a valid image format (PNG, JPG, GIF, SVG, WebP).");
+            }
         };
     }
 
