@@ -2020,3 +2020,73 @@ table {
   min-width: 250px;
   max-width: 80%;
 }
+
+/* Enhanced movable system styling */
+#movable {
+    margin: auto;
+    z-index: 10;
+    position: fixed;
+    display: none;
+    background: #f2f2f2;
+    font-family: sans-serif;
+    text-align: center;
+    margin-left: 24px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-width: 300px;
+}
+
+.notation-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.notation-system,
+.movable-system {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toggle-label {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.toggle-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.toggle-buttons .radioBtn {
+    margin-right: 8px;
+}
+
+.toggle-buttons label {
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    padding: 3px 0;
+}
+
+.toggle-buttons label:hover {
+    color: #2196F3;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    #movable {
+        min-width: 250px;
+        padding: 10px;
+    }
+    
+    .toggle-buttons label {
+        font-size: 12px;
+    }
+}

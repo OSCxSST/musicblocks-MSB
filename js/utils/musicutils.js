@@ -6096,16 +6096,21 @@ const getPitchInfo = (activity, type, currentNote, tur) => {
             case "alphabet class":
             case "letter class":
                 return pitch[0];
-            case "solfege syllable":
-            case "solfege class":
-                if (type === "solfege class") {
-                    // Remove sharps and flats.
-                    pitch = pitch.replace(SHARP).replace(FLAT);
-                }
-                if (tur.singer.movable === false) {
-                    return SOLFEGECONVERSIONTABLE[pitch];
-                }
-                return SOLFEGENAMES[buildScale(tur.singer.keySignature)[0].indexOf(pitch)];
+                case "solfege syllable":
+                    case "solfege class":
+                        if (type === "solfege class") {
+                            // Remove sharps and flats.
+                            pitch = pitch.replace(SHARP).replace(FLAT);
+                        }
+                        if (tur.singer.movable === false) {
+                            let solfegeNote = SOLFEGECONVERSIONTABLE[pitch];
+                            // Convert to current notation system if needed
+                            if (activity.notationSystem === "sargam") {
+                                solfegeNote = convertSolfegeToNotation(solfegeNote, "sargam");
+                            }
+                            return solfegeNote;
+                        }
+                        return SOLFEGENAMES[buildScale(tur.singer.keySignature)[0].indexOf(pitch)];
             case "pitch class":
                 return (pitchToNumber(pitch, octave, tur.singer.keySignature) - 3) % 12;
             case "scalar class":
@@ -6158,6 +6163,100 @@ const getPitchInfo = (activity, type, currentNote, tur) => {
         console.debug("Waiting for note to play");
     }
 };
+
+/**
+ * Maps from Western solfege names to their corresponding Sargam names.
+ * @constant {Object.<string, string>}
+ */
+const WESTERN2SARGAMNAMES = {
+    do: "sa",
+    re: "re", 
+    mi: "ga",
+    fa: "ma",
+    sol: "pa",
+    la: "dha",
+    ti: "ni"
+};
+
+/**
+ * Maps from Sargam names to their corresponding Western solfege names.
+ * @constant {Object.<string, string>}
+ */
+const SARGAM2WESTERNSOLFEGENAMES = {
+    sa: "do",
+    re: "re",
+    ga: "mi", 
+    ma: "fa",
+    pa: "sol",
+    dha: "la",
+    ni: "ti"
+};
+
+/**
+ * Maps from Western note names to their corresponding Sargam names.
+ * @constant {Object.<string, string>}
+ */
+const SARGAMCONVERSIONTABLE = {
+    "C♭": "sa" + FLAT,
+    "C": "sa",
+    "C♯": "sa" + SHARP,
+    "D♭": "re" + FLAT,
+    "D": "re",
+    "D♯": "re" + SHARP,
+    "E♭": "ga" + FLAT,
+    "E": "ga",
+    "F": "ma",
+    "F♯": "ma" + SHARP,
+    "G♭": "pa" + FLAT,
+    "G": "pa",
+    "G♯": "pa" + SHARP,
+    "A♭": "dha" + FLAT,
+    "A": "dha",
+    "A♯": "dha" + SHARP,
+    "B♭": "ni" + FLAT,
+    "B": "ni",
+    "B♯": "ni" + SHARP,
+    "R": _("rest")
+};
+
+/**
+ * Converts solfege notation to the currently selected notation system.
+ * @param {string} solfege - The solfege notation to convert.
+ * @param {string} notationSystem - The target notation system ("solfege" or "sargam").
+ * @returns {string} The converted notation.
+ */
+const convertSolfegeToNotation = (solfege, notationSystem) => {
+    if (notationSystem === "sargam") {
+        // Convert to Sargam
+        const baseNote = solfege.replace(/[♯♭𝄫]/g, "");
+        const accidental = solfege.match(/[♯♭𝄫]/);
+        if (WESTERN2SARGAMNAMES[baseNote]) {
+            return WESTERN2SARGAMNAMES[baseNote] + (accidental ? accidental[0] : "");
+        }
+    }
+    // Return original solfege if no conversion needed or conversion failed
+    return solfege;
+};
+
+/**
+ * Converts notation back to solfege for internal processing.
+ * @param {string} notation - The notation to convert.
+ * @param {string} notationSystem - The source notation system ("solfege" or "sargam").
+ * @returns {string} The converted solfege notation.
+ */
+const convertNotationToSolfege = (notation, notationSystem) => {
+    if (notationSystem === "sargam") {
+        // Convert from Sargam to Solfege
+        const baseNote = notation.replace(/[♯♭𝄫]/g, "");
+        const accidental = notation.match(/[♯♭𝄫]/);
+        if (SARGAM2WESTERNSOLFEGENAMES[baseNote]) {
+            return SARGAM2WESTERNSOLFEGENAMES[baseNote] + (accidental ? accidental[0] : "");
+        }
+    }
+    // Return original notation if no conversion needed or conversion failed
+    return notation;
+};
+
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         updateTemperaments,

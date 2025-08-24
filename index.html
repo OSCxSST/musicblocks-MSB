@@ -135,10 +135,26 @@
 
         <div id="movable" tabindex="-1">
             <p>Solfege Pitch Preview</p>
-            <input class="radioBtn" type="radio" name="movable" value="true" id="movabledo">
-            <label for="movabledo">Movable Do</label>
-            <input class="radioBtn" type="radio" name="movable" id="fixed" checked="checked" value="false">
-            <label for="fixed">Fixed</label>
+            <div class="notation-toggle">
+                <div class="notation-system">
+                    <label class="toggle-label">Notation System:</label>
+                    <div class="toggle-buttons">
+                        <input class="radioBtn" type="radio" name="notationSystem" value="solfege" id="solfege" checked="checked">
+                        <label for="solfege">Solfege (Do Re Mi)</label>
+                        <input class="radioBtn" type="radio" name="notationSystem" value="sargam" id="sargam">
+                        <label for="sargam">Sargam (Sa Re Ga)</label>
+                    </div>
+                </div>
+                <div class="movable-system">
+                    <label class="toggle-label">Movable System:</label>
+                    <div class="toggle-buttons">
+                        <input class="radioBtn" type="radio" name="movable" value="true" id="movabledo">
+                        <label for="movabledo">Movable Do</label>
+                        <input class="radioBtn" type="radio" name="movable" id="fixed" checked="checked" value="false">
+                        <label for="fixed">Fixed</label>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- #92B5C8  width = 3790 height = 1743-->
         <canvas id="canvas" width="100%" height="100%" style="background-color:#FFFFFF; width:100%;"></canvas>
