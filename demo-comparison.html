@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrument Selector - Before & After</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .before,
+        .after {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .before {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border: 3px solid #ff6b6b;
+        }
+
+        .after {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: 3px solid #4ecdc4;
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .before .badge {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .after .badge {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .mockup {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            margin: 20px auto;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .wheel-mockup {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 25px auto;
+            border-radius: 50%;
+            background: conic-gradient(#00ACC1 0deg 30deg,
+                    #4CAF50 30deg 60deg,
+                    #008BA3 60deg 90deg,
+                    #FF9800 90deg 120deg,
+                    #9C27B0 120deg 150deg,
+                    #E91E63 150deg 180deg,
+                    #795548 180deg 210deg,
+                    #00ACC1 210deg 240deg,
+                    #4CAF50 240deg 270deg,
+                    #008BA3 270deg 300deg,
+                    #FF9800 300deg 330deg,
+                    #9C27B0 330deg 360deg);
+            border: 3px solid #333;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .grid-mockup {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            position: relative;
+        }
+
+        .grid-item {
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .grid-close {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .issues {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .issues h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .issue-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .issue-list li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .before .issue-list li:before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+        }
+
+        .after .issue-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .features {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .features h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature h4 {
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .cta {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .test-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .test-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎵 Instrument Selector Redesign</h1>
+        <p class="subtitle">From Radial Wheel to Grid Layout</p>
+
+        <div class="comparison">
+            <div class="before">
+                <div class="badge">BEFORE</div>
+                <h3>Radial Wheel Interface</h3>
+                <div class="mockup">
+                    <div class="wheel-mockup">
+                        <div class="wheel-center">×</div>
+                    </div>
+                </div>
+                <div class="issues">
+                    <h4>Issues:</h4>
+                    <ul class="issue-list">
+                        <li>Text displayed upside down</li>
+                        <li>Hard to use on mobile</li>
+                        <li>Cluttered appearance</li>
+                        <li>Overlapping elements</li>
+                        <li>Poor readability</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="after">
+                <div class="badge">AFTER</div>
+                <h3>Grid-Based Interface</h3>
+                <div class="mockup">
+                    <div class="grid-mockup">
+                        <div class="grid-item" style="background: #00ACC1;">Piano</div>
+                        <div class="grid-item" style="background: #4CAF50;">Guitar</div>
+                        <div class="grid-item" style="background: #008BA3;">Violin</div>
+                        <div class="grid-item" style="background: #FF9800;">Flute</div>
+                        <div class="grid-item" style="background: #9C27B0;">Drum</div>
+                        <div class="grid-item" style="background: #E91E63;">Bass</div>
+                        <div class="grid-item" style="background: #795548;">Sax</div>
+                        <div class="grid-item" style="background: #00ACC1;">Cello</div>
+                        <div class="grid-close">×</div>
+                    </div>
+                </div>
+                <div class="issues">
+                    <h4>Improvements:</h4>
+                    <ul class="issue-list">
+                        <li>Always readable text</li>
+                        <li>Mobile-friendly design</li>
+                        <li>Clean, organized layout</li>
+                        <li>Touch-friendly buttons</li>
+                        <li>Color-coded categories</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>✨ Key Features of the New Design</h3>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>📱 Mobile Responsive</h4>
+                    <p>Grid automatically adapts to different screen sizes with touch-friendly button sizing.</p>
+                </div>
+                <div class="feature">
+                    <h4>🎨 Color Coding</h4>
+                    <p>Instruments grouped by category with consistent color schemes for easy recognition.</p>
+                </div>
+                <div class="feature">
+                    <h4>🎯 Central Close Button</h4>
+                    <p>Close button positioned in the center for easy access, as specified in requirements.</p>
+                </div>
+                <div class="feature">
+                    <h4>⚡ Better Performance</h4>
+                    <p>Simplified DOM structure leads to better rendering performance and easier maintenance.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a href="http://127.0.0.1:3000" class="test-btn" target="_blank">
+                🚀 Test the New Interface
+            </a>
+            <p style="margin-top: 15px; color: #666;">
+                Open Music Blocks and try the "Set Voice" block to see the new instrument selector!
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
