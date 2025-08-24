@@ -1,52 +1,88 @@
 ---
-name: 💡 Feature request
-about: Suggest an enhancement
-title: ""
-labels: "Issue-Enhancement"
+name: 💡 Feature Request
+about: Suggest a new feature or enhancement for Music Blocks
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
 assignees: ""
 ---
 
-### Current Behavior
+## Feature Summary
 
-<!-- A brief description of what the problem is. (e.g. I need to be able to...) -->
+<!-- A clear and concise description of the feature you'd like to see -->
 
-### Desired Behavior
+## Problem Statement
 
-<!-- A brief description of the enhancement. -->
+<!-- What problem does this feature solve? What use case does it address? -->
 
-### Screenshots / Mockups
+## Proposed Solution
 
-<!-- Add any other context or screenshots about the feature request here. -->
+<!-- Describe your preferred solution or approach -->
 
-### Implementation
+## Alternative Solutions
 
-<!-- Specifics on the approach to fulfilling the feature request. -->
+<!-- Describe any alternative solutions or features you've considered -->
 
-### Acceptance Tests
+## User Stories
 
-<!-- Stipulations of functional behavior or non-functional items that must be in-place in order for the issue to be closed. -->
+<!-- Describe how users would interact with this feature -->
 
-### Environment
+- As a [user type], I want [functionality] so that [benefit]
+- As a [user type], I want [functionality] so that [benefit]
 
--   Operating System: [e.g., Windows, macOS, Linux]
--   Browser (if applicable): [e.g., Chrome, Firefox, Safari]
--   Version of Software/Project: [e.g., v1.0.0]
+## Mockups/Design Ideas
 
-### Additional Information
+<!-- Add any sketches, mockups, or design ideas here -->
 
-<!-- [Include any additional context, logs, or details that might be helpful in addressing the issue.] -->
+## Implementation Considerations
 
-### Checklist
+<!-- Technical details about how this might be implemented -->
 
--   [ ] I have read and followed the project's code of conduct.
--   [ ] I have searched for similar issues before creating this one.
--   [ ] I have provided all the necessary information to understand and reproduce the issue.
--   [ ] I am willing to contribute to the resolution of this issue.
+### Technical Requirements
+
+- [ ] Frontend changes needed
+- [ ] Backend changes needed  
+- [ ] Database changes needed
+- [ ] API changes needed
+- [ ] Documentation updates needed
+
+### Complexity
+
+- [ ] Simple (few hours of work)
+- [ ] Medium (few days of work)
+- [ ] Complex (weeks of work)
+
+## Acceptance Criteria
+
+<!-- Define what "done" looks like for this feature -->
+
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## Environment
+
+- **Target Users**: [e.g., Students, Teachers, Developers]
+- **Use Case**: [e.g., Educational, Creative, Accessibility]
+- **Priority**: [e.g., Low, Medium, High, Critical]
+
+## Related Issues
+
+<!-- Link any related issues using #issue_number -->
+
+## Additional Context
+
+<!-- Add any other context, research, or resources related to this feature -->
+
+## Checklist
+
+- [ ] I have searched for existing feature requests before creating this one
+- [ ] I have provided a clear problem statement and proposed solution
+- [ ] I have considered alternative approaches
+- [ ] I understand this feature may require significant development time
+- [ ] I am willing to help with testing or implementation
 
 ---
 
-Thank you for contributing to our project! We appreciate your help in improving it.
+**Thank you for helping improve Music Blocks!** 🎵
 
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
-
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+📚 [Contributing Guidelines](https://github.com/sugarlabs/musicblocks/blob/master/README.md) | � [Community Chat](https://matrix.to/#/#sugar:matrix.org)

@@ -1,48 +1,72 @@
 ---
 name: 🐛 Bug Report
-about: Report an issue to help us improve
-title: ""
-labels: "Issue-Bug"
+about: Report a bug to help us improve Music Blocks
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
 assignees: ""
 ---
 
-### Description
+## Bug Description
 
-<!-- A brief description with a link to the page on the site where you found the issue. -->
+<!-- A clear and concise description of the bug -->
 
-### Expected Behavior
+## Steps to Reproduce
 
-<!-- A brief description of what you expected to happen. -->
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See error
 
-### Screenshots
+## Expected Behavior
 
-<!-- Add screenshots, if applicable, to help explain your problem. -->
+<!-- A clear and concise description of what you expected to happen -->
 
-### How to Reproduce
+## Actual Behavior
 
-<!-- Add specific steps to reproduce that issue -->
+<!-- A clear and concise description of what actually happened -->
 
-### Console log Errors:
+## Screenshots/Videos
 
-<!-- Upload console log screenshots to help explain your problem in much better fashion -->
+<!-- If applicable, add screenshots or screen recordings to help explain your problem -->
 
-### Environment:
+## Console Errors
 
--   Operating System: [e.g., Windows, macOS, Linux]
--   Browser (if applicable): [e.g., Chrome, Firefox, Safari]
--   Version of Software/Project: [e.g., v1.0.0]
+<!-- Open browser developer tools (F12) and paste any error messages from the Console tab -->
 
-### Checklist
+```
+Paste console errors here
+```
 
--   [ ] I have read and followed the project's code of conduct.
--   [ ] I have searched for similar issues before creating this one.
--   [ ] I have provided all the necessary information to understand and reproduce the issue.
--   [ ] I am willing to contribute to the resolution of this issue.
+## Environment
+
+- **Operating System**: [e.g., Windows 11, macOS 13, Ubuntu 22.04]
+- **Browser**: [e.g., Chrome 118, Firefox 119, Safari 17]
+- **Music Blocks Version**: [e.g., v3.4.1 or commit hash]
+- **Device**: [e.g., Desktop, Mobile, Tablet]
+- **Screen Resolution**: [e.g., 1920x1080]
+
+## Additional Context
+
+<!-- Add any other context about the problem here -->
+
+## Possible Solution
+
+<!-- If you have a suggestion for fixing the bug, describe it here -->
+
+## Related Issues
+
+<!-- Link any related issues using #issue_number -->
+
+## Checklist
+
+- [ ] I have searched for existing issues before creating this one
+- [ ] I have provided all the necessary information to reproduce the issue
+- [ ] I have included console errors (if any)
+- [ ] I have tested this on the latest version of Music Blocks
+- [ ] I am willing to help test potential fixes
 
 ---
 
-Thank you for contributing to our project! We appreciate your help in improving it.
+**Thank you for helping improve Music Blocks!** 🎵
 
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
-
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+📚 [Contributing Guidelines](https://github.com/sugarlabs/musicblocks/blob/master/README.md) | � [Community Chat](https://matrix.to/#/#sugar:matrix.org)

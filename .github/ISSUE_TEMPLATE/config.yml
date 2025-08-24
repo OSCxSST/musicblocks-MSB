@@ -1,5 +1,14 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 🙋🏾 🙋🏼‍ Question
+  - name: �️ Community Discussions
     url: https://github.com/sugarlabs/musicblocks/discussions/new/choose
-    about: Submit your question using GitHub Discussions.
+    about: Ask questions and discuss ideas with the community
+  - name: 💬 Matrix Chat
+    url: https://matrix.to/#/#sugar:matrix.org
+    about: Real-time chat with the Music Blocks community
+  - name: 📚 Documentation
+    url: https://github.com/sugarlabs/musicblocks/blob/master/README.md
+    about: Read the project documentation and guides
+  - name: 🌐 Website
+    url: https://musicblocks.sugarlabs.org
+    about: Visit the official Music Blocks website

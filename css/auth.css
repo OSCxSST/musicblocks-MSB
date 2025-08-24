@@ -1,0 +1,154 @@
+/* Authentication Styles for Music Blocks */
+
+#auth-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#auth-error {
+    display: none;
+    color: #f44336;
+    margin-right: 10px;
+    font-size: 12px;
+    background: rgba(244, 67, 54, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+#google-signin-btn {
+    display: block;
+    margin-right: 10px;
+    padding: 0 16px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#google-signin-btn:hover {
+    background-color: #1976D2;
+}
+
+#google-signin-btn i {
+    margin-right: 8px;
+}
+
+#user-display {
+    display: none;
+    align-items: center;
+    margin-right: 10px;
+    color: white;
+    font-size: 14px;
+    gap: 8px;
+}
+
+#user-display img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+#google-signout-btn {
+    display: none;
+    margin-right: 10px;
+    padding: 0 16px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#google-signout-btn:hover {
+    background-color: #d32f2f;
+}
+
+#google-signout-btn i {
+    margin-right: 8px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    #auth-container {
+        flex-direction: column;
+        align-items: flex-end;
+        margin-right: 5px;
+    }
+    
+    #google-signin-btn,
+    #google-signout-btn {
+        margin-right: 0;
+        margin-bottom: 5px;
+        font-size: 12px;
+        padding: 0 12px;
+        height: 32px;
+        line-height: 32px;
+    }
+    
+    #user-display {
+        margin-right: 0;
+        font-size: 12px;
+    }
+    
+    #user-display img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Dark theme support */
+body.dark #auth-error {
+    background: rgba(244, 67, 54, 0.2);
+    border-color: rgba(244, 67, 54, 0.4);
+}
+
+body.dark #google-signin-btn {
+    background-color: #1976D2;
+}
+
+body.dark #google-signin-btn:hover {
+    background-color: #1565C0;
+}
+
+body.dark #user-display {
+    color: #E0E0E0;
+}
+
+/* Loading state */
+.auth-loading {
+    opacity: 0.7;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.auth-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: auth-spin 1s linear infinite;
+}
+
+@keyframes auth-spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}

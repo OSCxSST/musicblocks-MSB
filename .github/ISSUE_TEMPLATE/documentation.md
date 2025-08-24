@@ -1,32 +1,60 @@
 ---
-name: 📄 Documentation issue
-about: Issues related to documentation.
-title: "[Docs]"
-labels: "Issue-Documentation"
+name: 📄 Documentation Issue
+about: Report missing, incorrect, or unclear documentation
+title: "[Docs]: "
+labels: ["documentation", "needs-review"]
 assignees: ""
 ---
 
-#### Current State
+## Documentation Issue Type
 
-<!-- A brief description of what the current circumstance is. -->
+- [ ] Missing documentation
+- [ ] Incorrect/outdated information
+- [ ] Unclear or confusing content
+- [ ] Broken links or images
+- [ ] Translation needed
+- [ ] Accessibility improvements
 
-#### Desired State
+## Location
 
-<!-- A brief description of the necessary action to take. -->
+<!-- Where is the documentation issue located? -->
+
+- **Page/File**: [e.g., README.md, User Guide, API docs]
+- **URL**: [if applicable]
+- **Section**: [specific section or heading]
+
+## Current State
+
+<!-- Describe what's currently there (or missing) -->
+
+## Expected/Desired State
+
+<!-- Describe what should be there or how it should be improved -->
+
+## Proposed Changes
+
+<!-- Specific suggestions for fixing the documentation -->
+
+## Target Audience
+
+- [ ] End users (students/teachers)
+- [ ] Developers/contributors
+- [ ] System administrators
+- [ ] Other: ___________
+
+## Additional Context
+
+<!-- Screenshots, examples, or other helpful information -->
+
+## Checklist
+
+- [ ] I have checked for existing documentation issues
+- [ ] I have identified the specific location of the problem
+- [ ] I have provided clear suggestions for improvement
+- [ ] I am willing to help write or review the updated documentation
 
 ---
 
-### Checklist
+**Thank you for helping improve Music Blocks documentation!** 📚
 
--   [ ] I have read and followed the project's code of conduct.
--   [ ] I have searched for similar issues before creating this one.
--   [ ] I have provided all the necessary information to understand and reproduce the issue.
--   [ ] I am willing to contribute to the resolution of this issue.
-
----
-
-Thank you for contributing to our project! We appreciate your help in improving it.
-
-📚 See [contributing instructions](https://github.com/sugarlabs/musicblocks/blob/master/README.md).
-
-🙋🏾🙋🏼 Questions: [Community Matrix Server](https://matrix.to/#/#sugar:matrix.org).
+📚 [Contributing Guidelines](https://github.com/sugarlabs/musicblocks/blob/master/README.md) | � [Community Chat](https://matrix.to/#/#sugar:matrix.org)

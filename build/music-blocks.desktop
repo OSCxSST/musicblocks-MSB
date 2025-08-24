@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Music Blocks
+Comment=A musical microworld for learning programming through music
+Exec=music-blocks %U
+Terminal=false
+Type=Application
+Icon=music-blocks
+StartupWMClass=Music Blocks
+MimeType=application/x-musicblocks;
+Categories=Education;AudioVideo;Audio;Music;
+Keywords=music;programming;education;blocks;coding;
