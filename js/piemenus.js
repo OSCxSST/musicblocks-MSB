@@ -3935,3 +3935,52 @@ const piemenuKey = (activity) => {
         modenameWheel.navigateWheel(j);
     }
 };
+
+// Add notation system handling
+const __handleNotationSystemChange = () => {
+    const notationSystem = document.querySelector('input[name="notationSystem"]:checked').value;
+    activity.notationSystem = notationSystem;
+    activity.storage.notationSystem = notationSystem;
+    
+    // Update the movable system display based on notation
+    if (notationSystem === "sargam") {
+        // Show Sargam-specific options or messages
+        activity.textMsg(_("Sargam notation system selected. Notes will be displayed as Sa Re Ga Ma Pa Dha Ni."), 3000);
+    } else {
+        // Show Solfege-specific options or messages  
+        activity.textMsg(_("Solfege notation system selected. Notes will be displayed as Do Re Mi Fa Sol La Ti."), 3000);
+    }
+};
+
+// Add event listeners for notation system changes
+document.addEventListener('DOMContentLoaded', () => {
+    const notationInputs = document.querySelectorAll('input[name="notationSystem"]');
+    notationInputs.forEach(input => {
+        input.addEventListener('change', __handleNotationSystemChange);
+    });
+});
+
+// Update the __exitMenu function to save notation system preference
+const __exitMenu = () => {
+    docById("chooseKeyDiv").style.display = "none";
+    docById("movable").style.display = "none";
+    
+    // Save movable system preference
+    const ele = document.getElementsByName("movable");
+    for (let i = 0; i < ele.length; i++) {
+        if (ele[i].checked) {
+            activity.KeySignatureEnv[2] = ele[i].value == "true" ? true : false;
+        }
+    }
+    
+    // Save notation system preference
+    const notationSystem = document.querySelector('input[name="notationSystem"]:checked').value;
+    activity.notationSystem = notationSystem;
+    activity.storage.notationSystem = notationSystem;
+    
+    keyNameWheel.removeWheel();
+    keyNameWheel2.removeWheel();
+    modenameWheel.removeWheel();
+    activity.storage.KeySignatureEnv = activity.KeySignatureEnv;
+    __generateSetKeyBlocks();
+};
