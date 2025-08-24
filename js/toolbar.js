@@ -62,6 +62,8 @@ class Toolbar {
                 ["helpIcon", _("Help")],
                 ["runSlowlyIcon", _("Run slowly")],
                 ["runStepByStepIcon", _("Run step by step")],
+                ["undoIcon", _("Undo")],
+                ["redoIcon", _("Redo")],
                 ["displayStatsIcon", _("Display statistics")],
                 ["loadPluginIcon", _("Load plugin")],
                 ["delPluginIcon", _("Delete plugin")],
@@ -129,6 +131,8 @@ class Toolbar {
                 _("Help"),
                 _("Run slowly"),
                 _("Run step by step"),
+                _("Undo"),
+                _("Redo"),
                 _("Display statistics"),
                 _("Load plugin"),
                 _("Delete plugin"),
@@ -831,6 +835,36 @@ class Toolbar {
         runSlowlyIcon.onclick = () => {
             onclick(this.activity);
             docById("stop").style.color = this.stopIconColorWhenPlaying;
+        };
+    }
+
+    /**
+     * Renders the undo icon with the provided onclick handler.
+     * 
+     * @public
+     * @param {Function} onclick - The onclick handler for the undo icon.
+     * @returns {void}
+     */
+    renderUndoIcon(onclick) {
+        const undoIcon = docById("undoIcon");
+
+        undoIcon.onclick = () => {
+            onclick(this.activity);
+        };
+    }
+
+    /**
+     * Renders the redo icon with the provided onclick handler.
+     * 
+     * @public
+     * @param {Function} onclick - The onclick handler for the redo icon.
+     * @returns {void}
+     */
+    renderRedoIcon(onclick) {
+        const redoIcon = docById("redoIcon");
+
+        redoIcon.onclick = () => {
+            onclick(this.activity);
         };
     }
 

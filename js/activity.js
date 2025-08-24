@@ -277,6 +277,11 @@ class Activity {
         //Flag to check if any other input box is active or not
         this.isInputON = false;
 
+        // Undo/Redo system
+        this.undoStack = [];
+        this.redoStack = [];
+        this.maxUndoStackSize = 50; // Limit stack size to prevent memory issues
+
         this.themes = ["light", "dark"];
         try {
             for (let i = 0; i < this.themes.length; i++) {
@@ -3075,6 +3080,8 @@ class Activity {
             const KEYCODE_DOWN = 40;
             const DEL = 46;
             const V = 86;
+            const Z = 90;
+            const Y = 89;
             // Shortcuts for creating new notes
             const KEYCODE_D = 68; // do
             const KEYCODE_R = 82; // re
@@ -3177,6 +3184,22 @@ class Activity {
                         docById("paste").focus();
                         docById("paste").style.visibility = "visible";
                         this.update = true;
+                        break;
+                    case Z:
+                        if (event.shiftKey) {
+                            // Ctrl+Shift+Z = Redo
+                            this.textMsg("Ctrl+Shift+Z " + _("Redo"));
+                            this._doRedo();
+                        } else {
+                            // Ctrl+Z = Undo
+                            this.textMsg("Ctrl+Z " + _("Undo"));
+                            this._doUndo();
+                        }
+                        break;
+                    case Y:
+                        // Ctrl+Y = Redo (alternative to Ctrl+Shift+Z)
+                        this.textMsg("Ctrl+Y " + _("Redo"));
+                        this._doRedo();
                         break;
                 }
             } else if (event.shiftKey && !disableKeys) {
@@ -6411,6 +6434,8 @@ class Activity {
             this.toolbar.renderModeSelectIcon(doSwitchMode, doRecordButton, doAnalytics, doOpenPlugin, deletePlugin, setScroller);
             this.toolbar.renderRunSlowlyIcon(doSlowButton);
             this.toolbar.renderRunStepIcon(doStepButton);
+            this.toolbar.renderUndoIcon(() => this._doUndo());
+            this.toolbar.renderRedoIcon(() => this._doRedo());
             this.toolbar.renderThemeSelectIcon(this.themeBox, this.themes);
             this.toolbar.renderMergeIcon(_doMergeLoad);
             this.toolbar.renderRestoreIcon(restoreTrash);
@@ -6980,6 +7005,9 @@ class Activity {
             if (this.planet !== undefined) {
                 this.planet.planet.setAnalyzeProject(doAnalyzeProject);
             }
+
+            // Initialize undo/redo button states
+            this._updateUndoRedoButtons();
         };
     }
 
@@ -7086,6 +7114,164 @@ class Activity {
             // eslint-disable-next-line no-console
             console.error("Error regenerating palettes:", e);
             this.errorMsg(_("Error regenerating palettes. Please refresh the page."));
+        }
+    }
+
+    /**
+     * Saves the current state of blocks to the undo stack
+     * @public
+     * @returns {void}
+     */
+    saveStateForUndo() {
+        if (!this.blocks) return;
+
+        try {
+            const state = {
+                blockData: this.prepareExport(),
+                timestamp: Date.now(),
+                description: "Block operation"
+            };
+
+            // Add to undo stack
+            this.undoStack.push(state);
+
+            // Limit stack size
+            if (this.undoStack.length > this.maxUndoStackSize) {
+                this.undoStack.shift();
+            }
+
+            // Clear redo stack when a new action is performed
+            this.redoStack = [];
+
+            this._updateUndoRedoButtons();
+        } catch (e) {
+            console.error("Error saving state for undo:", e);
+        }
+    }
+
+    /**
+     * Performs undo operation
+     * @private
+     * @returns {void}
+     */
+    _doUndo() {
+        if (this.undoStack.length === 0) {
+            this.textMsg(_("Nothing to undo"));
+            return;
+        }
+
+        if (!this.blocks) return;
+
+        try {
+            // Save current state to redo stack
+            const currentState = {
+                blockData: this.prepareExport(),
+                timestamp: Date.now(),
+                description: "Current state"
+            };
+            this.redoStack.push(currentState);
+
+            // Get previous state from undo stack
+            const previousState = this.undoStack.pop();
+
+            // Restore previous state
+            this._restoreState(previousState);
+
+            this.textMsg(_("Undo successful"));
+            this._updateUndoRedoButtons();
+        } catch (e) {
+            console.error("Error during undo:", e);
+            this.errorMsg(_("Error during undo operation"));
+        }
+    }
+
+    /**
+     * Performs redo operation
+     * @private
+     * @returns {void}
+     */
+    _doRedo() {
+        if (this.redoStack.length === 0) {
+            this.textMsg(_("Nothing to redo"));
+            return;
+        }
+
+        if (!this.blocks) return;
+
+        try {
+            // Save current state to undo stack
+            const currentState = {
+                blockData: this.prepareExport(),
+                timestamp: Date.now(),
+                description: "Current state"
+            };
+            this.undoStack.push(currentState);
+
+            // Get next state from redo stack
+            const nextState = this.redoStack.pop();
+
+            // Restore next state
+            this._restoreState(nextState);
+
+            this.textMsg(_("Redo successful"));
+            this._updateUndoRedoButtons();
+        } catch (e) {
+            console.error("Error during redo:", e);
+            this.errorMsg(_("Error during redo operation"));
+        }
+    }
+
+    /**
+     * Restores blocks state from a saved state
+     * @private
+     * @param {Object} state - The state to restore
+     * @returns {void}
+     */
+    _restoreState(state) {
+        if (!state || !state.blockData) return;
+
+        try {
+            // Clear current blocks without confirmation
+            this._allClear(true, true);
+
+            // Load blocks from saved state
+            this.blocks.loadNewBlocks(JSON.parse(state.blockData));
+
+            // Refresh the display
+            this.refreshCanvas();
+        } catch (e) {
+            console.error("Error restoring state:", e);
+            throw e;
+        }
+    }
+
+    /**
+     * Updates the visual state of undo/redo buttons
+     * @private
+     * @returns {void}
+     */
+    _updateUndoRedoButtons() {
+        const undoButton = docById("undoIcon");
+        const redoButton = docById("redoIcon");
+
+        if (undoButton) {
+            if (this.undoStack.length > 0) {
+                undoButton.style.opacity = "1";
+                undoButton.style.cursor = "pointer";
+            } else {
+                undoButton.style.opacity = "0.4";
+                undoButton.style.cursor = "not-allowed";
+            }
+        }
+
+        if (redoButton) {
+            if (this.redoStack.length > 0) {
+                redoButton.style.opacity = "1";
+                redoButton.style.cursor = "pointer";
+            } else {
+                redoButton.style.opacity = "0.4";
+                redoButton.style.cursor = "not-allowed";
+            }
         }
     }
 }
