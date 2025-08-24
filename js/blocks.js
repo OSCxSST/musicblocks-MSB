@@ -3120,6 +3120,10 @@ class Blocks {
             /**
              * Create a new block
              */
+            
+            // Save state for undo before creating new block
+            this.activity.saveStateForUndo();
+            
             if (this.protoBlockDict[name] == null) {
                 // eslint-disable-next-line no-console
                 console.debug("makeNewBlock: no prototype for " + name);
@@ -6823,6 +6827,9 @@ class Blocks {
          * @returns {void}
          */
         this.sendStackToTrash = (myBlock) => {
+            // Save state for undo before deleting blocks
+            this.activity.saveStateForUndo();
+
             /** First, hide the palettes as they may need updating. */
             for (const name in this.activity.palettes.dict) {
                 this.activity.palettes.dict[name].hideMenu(true);

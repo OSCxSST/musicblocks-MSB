@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GIF Test for Music Blocks</title>
+</head>
+
+<body>
+    <h1>Testing GIF Support in Music Blocks</h1>
+    <p>This is a test page to verify that GIF support is working properly in Music Blocks.</p>
+
+    <h2>Steps to test:</h2>
+    <ol>
+        <li>Go to <a href="http://127.0.0.1:3000" target="_blank">Music Blocks</a></li>
+        <li>Drag a "Media" block from the Media palette</li>
+        <li>Click on the Media block to open the file picker</li>
+        <li>Select a GIF file</li>
+        <li>Connect the Media block to a "Show" block</li>
+        <li>Run the program to verify the GIF displays correctly</li>
+    </ol>
+
+    <h2>Expected behavior:</h2>
+    <ul>
+        <li>The file picker should accept GIF files</li>
+        <li>The Media block should show a thumbnail of the GIF</li>
+        <li>The Show block should display the GIF on the canvas</li>
+        <li>For animated GIFs, the first frame should be displayed (note: CreateJS typically shows only the first frame
+            of animated GIFs)</li>
+        <li>No console errors should appear</li>
+    </ul>
+
+    <h2>Changes made:</h2>
+    <ul>
+        <li>Updated HTML file input to explicitly accept GIF files:
+            <code>accept="image/*,.gif,.png,.jpg,.jpeg,.svg,.webp"</code></li>
+        <li>Added error handling to image loading in block.js, turtle.js</li>
+        <li>Updated help text to mention GIF support</li>
+        <li>Added console logging for debugging image loading issues</li>
+    </ul>
+
+    <h2>Notes:</h2>
+    <p>If you encounter issues:</p>
+    <ul>
+        <li>Check the browser console for error messages</li>
+        <li>Ensure the GIF file is not corrupted</li>
+        <li>Try with a small, simple GIF file first</li>
+        <li>Animated GIFs will typically display only the first frame due to CreateJS limitations</li>
+    </ul>
+</body>
+
+</html>

@@ -2073,6 +2073,16 @@ class Block {
             that.updateCache();
         };
 
+        // Add error handling for image loading failures
+        image.onerror = (error) => {
+            console.error("Failed to load image:", error);
+            console.error("Image source:", imagePath || that.value);
+            // Set a default error message or fallback behavior
+            if (that.blocks && that.blocks.activity && that.blocks.activity.errorMsg) {
+                that.blocks.activity.errorMsg("Failed to load image. Make sure the file is a valid image format (PNG, JPG, GIF, SVG, WebP).");
+            }
+        };
+
         if (imagePath === null) {
             image.src = this.value;
         } else {
