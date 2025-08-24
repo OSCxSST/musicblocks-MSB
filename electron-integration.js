@@ -129,6 +129,41 @@
                     }
                     break;
                     
+                case 'next-chapter':
+                    if (window.MusicBlocksHardwareButtons) {
+                        window.MusicBlocksHardwareButtons.skipToNextChunk();
+                    }
+                    break;
+                    
+                case 'previous-chapter':
+                    if (window.MusicBlocksHardwareButtons) {
+                        window.MusicBlocksHardwareButtons.skipToPreviousChunk();
+                    }
+                    break;
+                    
+                case 'skip-forward':
+                    // Fast forward functionality
+                    if (window.globalActivity && window.globalActivity.logo) {
+                        const logo = window.globalActivity.logo;
+                        if (logo.turtleDelay === 0) {
+                            logo.turtleDelay = 10; // Slow down briefly to simulate fast forward
+                            setTimeout(() => {
+                                logo.turtleDelay = 0; // Resume normal speed
+                            }, 1000);
+                        }
+                    }
+                    break;
+                    
+                case 'skip-backward':
+                    // Rewind functionality - restart current section
+                    const rewindPlayButton = document.getElementById('play');
+                    if (rewindPlayButton) {
+                        const stopButton = document.getElementById('stop');
+                        if (stopButton) stopButton.click();
+                        setTimeout(() => rewindPlayButton.click(), 200);
+                    }
+                    break;
+                    
                 default:
                     console.warn('[Music Blocks] Unknown menu action:', action);
             }
