@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Instrument Selector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: transform 0.2s ease;
+        }
+
+        .test-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .comparison-item {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .old-way {
+            background: #ffebee;
+            border: 2px solid #f44336;
+        }
+
+        .new-way {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>🎵 Music Blocks Instrument Selector Upgrade</h1>
+
+        <div class="description">
+            <h3>What's Changed?</h3>
+            <p>We've replaced the radial wheel instrument selector with a modern, grid-based layout that offers:</p>
+            <ul class="feature-list">
+                <li>Better readability - no more upside-down text!</li>
+                <li>Mobile-friendly design with easier touch interaction</li>
+                <li>Cleaner, more organized layout</li>
+                <li>Color-coded instrument categories</li>
+                <li>Close button positioned in the center for easy access</li>
+            </ul>
+        </div>
+
+        <button class="test-button" onclick="openMusicBlocks()">
+            🎹 Test the New Instrument Selector
+        </button>
+
+        <div class="comparison">
+            <div class="comparison-item old-way">
+                <h4>❌ Old Radial Wheel</h4>
+                <ul style="text-align: left; margin-top: 15px;">
+                    <li>Text displayed at angles</li>
+                    <li>Hard to use on mobile</li>
+                    <li>Cluttered appearance</li>
+                    <li>Difficult to customize</li>
+                </ul>
+            </div>
+            <div class="comparison-item new-way">
+                <h4>✅ New Grid Layout</h4>
+                <ul style="text-align: left; margin-top: 15px;">
+                    <li>Always readable text</li>
+                    <li>Mobile-responsive design</li>
+                    <li>Clean, organized layout</li>
+                    <li>Easy to maintain and extend</li>
+                </ul>
+            </div>
+        </div>
+
+        <div
+            style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 8px; border: 1px solid #ffeaa7;">
+            <h4>🧪 How to Test:</h4>
+            <ol>
+                <li>Click the "Test the New Instrument Selector" button</li>
+                <li>In Music Blocks, drag a "Set Voice" block from the palette</li>
+                <li>Click on the voice name in the block to open the selector</li>
+                <li>Experience the new grid-based interface!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function openMusicBlocks() {
+            window.open('http://127.0.0.1:3000', '_blank');
+        }
+    </script>
+</body>
+
+</html>
